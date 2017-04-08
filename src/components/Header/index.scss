@@ -1,0 +1,95 @@
+@import "../../assets/styles/tool";
+
+$headerHeight: 64px;
+
+.header {
+  height: $headerHeight;
+  min-width: 300px;
+  background: #fff;
+  padding: 0;
+
+  .trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: color .3s;
+
+    &:hover {
+      color: #000000;
+    }
+  }
+
+  .item {
+    height: $headerHeight;
+    float: right;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ddd;
+    }
+
+    .user {
+      width: 40px;
+      height: 40px;
+      margin: 12px $gap_md;
+      @include border-radius(50%)
+    }
+
+    .notice {
+      margin: 12px $gap_md;
+
+      i {
+        width: 40px;
+        height: 40px;
+        font-size: 28px;
+        line-height: 40px;
+        background: #ffffff;
+        color: #999;
+        @include border-radius(50%);
+      }
+
+      sup {
+        margin: 10px 0 0 -5px;
+      }
+    }
+  }
+}
+
+.popoverUser {
+
+  :global(.ant-popover-arrow::after) {
+    border-bottom-color: #108ee9 !important;
+  }
+
+  :global(.ant-popover-inner-content) {
+    background-color: #108ee9;
+    padding: 15px 0 0 0;
+
+    .popoverUserAvatar {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto;
+      @include border-radius(50%)
+    }
+
+    .popoverUserName {
+      width: 200px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .popoverUserBtn {
+      height: 40px;
+      background-color: #fff;
+      padding: 6px 28px;
+
+      button:first-child {
+        margin-right: 20px;
+      }
+    }
+  }
+}

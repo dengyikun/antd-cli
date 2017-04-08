@@ -1,0 +1,31 @@
+.logo {
+  height: 32px;
+  background: #333;
+  border-radius: 6px;
+  margin: 16px;
+  background: url("../../assets/images/logo-horizontal.jpg") no-repeat left center;
+  background-size: auto 100%;
+  overflow: hidden;
+}
+
+.menu {
+  height: calc(100% - 64px);
+
+  :global(.scrollbar) {
+    background: #fff!important;
+  }
+}
+
+:global(.ant-layout-sider-collapsed) {
+  flex: 0 0 0!important;
+
+  :global(.ant-menu) {
+    display: none;
+    transition: all .3s ease;
+  }
+
+  .logo {
+    display: none;
+    transition: all .3s ease;
+  }
+}

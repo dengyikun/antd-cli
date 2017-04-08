@@ -1,0 +1,96 @@
+@import "tool";
+
+:global {
+
+  * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei Light", sans-serif;
+  }
+
+  html {
+    height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: #d2d6de;
+  }
+
+  #app {
+    width: 100%;
+    height: 100%;
+  }
+
+  h1 {
+    margin-bottom: $gap_md;
+  }
+
+  h2 {
+    margin-bottom: $gap_sm;
+  }
+
+  h3 {
+    margin-bottom: $gap_sm;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #d9d9d9;
+    margin-bottom: $gap_md;
+  }
+
+  img {
+    vertical-align: bottom;
+    display: block;
+  }
+
+  .minor {
+    color: rgba(0, 0, 0, 0.65);
+  }
+
+  .ant-rate-star {
+    font-family: 'anticon',sans-serif !important;
+  }
+
+  .ant-input-number,
+  .ant-select,
+  .ant-cascader-picker,
+  .ant-calendar-picker {
+    width: 100%;
+  }
+
+  .ant-card-body {
+    height: 100%;
+  }
+
+  .ant-message-notice {
+    text-align: center;
+    color: #fff;
+
+    .ant-message-notice-content {
+      width: 60%;
+      padding: 0;
+
+      .ant-message-custom-content {
+        padding: 8px 16px;
+
+        &.ant-message-success {
+          background: rgba(0, 128, 0, 0.7);
+        }
+
+        &.ant-message-error {
+          background: rgba(255, 0, 0, 0.7);
+        }
+
+        .anticon {
+          display: none;
+        }
+      }
+    }
+  }
+}
