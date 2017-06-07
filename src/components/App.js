@@ -5,14 +5,11 @@ import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import { Link } from 'react-router'
-import AppMenu from '../Menu'
-import AppHeader from '../Header'
+import AppMenu from './Menu'
+import AppHeader from './Header'
 import {Layout, Spin, Row, Col, Breadcrumb} from 'antd'
-import ReactScrollbar from 'react-scrollbar'
-import uiAction from '../../actions/uiAction'
-import userAction from '../../actions/userAction'
-import {HTTP} from '../../config'
-import styles from './index.scss'
+import uiAction from '../actions/uiAction'
+import styles from '../assets/styles/components/App.scss'
 
 const {Content} = Layout
 
@@ -22,13 +19,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     uiAction: bindActionCreators(uiAction, dispatch),
-    userAction: bindActionCreators(userAction, dispatch)
 })
 
 class AppUI extends Component {
     static propTypes = {
         uiAction: PropTypes.object.isRequired,
-        userAction: PropTypes.object.isRequired
     }
 
     static contextTypes = {
@@ -44,13 +39,7 @@ class AppUI extends Component {
     }
 
     componentWillMount() {
-        HTTP.getSitemap(() => {
-            //获取用户信息
-            HTTP.get('user_info', (data) => {
-                this.props.userAction.setUser(data)
-                this.setState({appLoading: false})
-            })
-        })
+        this.setState({appLoading: false})
     }//插入 DOM 前
 
     getContentName = () => {
@@ -78,10 +67,6 @@ class AppUI extends Component {
                     <Layout>
                         <AppHeader/>
                         <Content className={styles.content}>
-                            {/*<ReactScrollbar*/}
-                            {/*speed={0.8}*/}
-                            {/*horizontal={false}*/}
-                            {/*>*/}
                             <div className={styles.header}>
                                 <Row gutter={20}>
                                     <Col md={8} xs={24}>
@@ -96,7 +81,6 @@ class AppUI extends Component {
                                 </Row>
                             </div>
                             {this.props.children}
-                            {/*</ReactScrollbar>*/}
                         </Content>
                     </Layout>
                 </Layout>

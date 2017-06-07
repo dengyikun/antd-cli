@@ -8,9 +8,7 @@ const apiHost = () => {
     let env = process.env.NODE_ENV
     let apiHost = ''
     if (env === 'development') {
-        apiHost = 'http://121.201.14.42:8081'
     } else if (env === 'production') {
-        apiHost = 'http://121.201.14.42:8081'
     }
     return apiHost
 }

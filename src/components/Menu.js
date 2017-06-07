@@ -3,22 +3,20 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {Layout, Menu, Icon} from 'antd'
 import Scrollbar from 'react-scrollbar'
-import {HTTP, URL} from '../../config'
-import styles from './index.scss'
+import {URL} from '../config'
+import styles from '../assets/styles/components/Menu.scss'
 
 const {Sider} = Layout
 const SubMenu = Menu.SubMenu
 
 const mapStateToProps = (state) => ({
     collapsed: state.ui.menuCollapsed,
-    user: state.user
 })
 
 class MenuUI extends React.Component {
     static propTypes = {
         pathname: PropTypes.string.isRequired,
         collapsed: PropTypes.bool.isRequired,
-        user: PropTypes.object.isRequired,
     }
     static contextTypes = {
         router: React.PropTypes.object
@@ -36,18 +34,14 @@ class MenuUI extends React.Component {
                     children: []
                 },
             ],
-            visibleMenus: [],
+            visibleMenus: ['M_01'],
             menuSelected: [],
             menuOpened: [],
         }
     }//初始化 state
 
     componentWillMount() {
-        //获取可见菜单
-        HTTP.get('user_menus', (data) => {
-            this.setState({visibleMenus: data})
-            this.setMenuSelect()
-        })
+        this.setMenuSelect()
     }//插入 DOM 前
 
     componentWillReceiveProps(nextProps) {

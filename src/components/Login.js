@@ -3,8 +3,8 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Form, Icon, Input, Button, Checkbox, Row, Col} from 'antd';
-import {HTTP, URL} from '../../config'
-import styles from './index.scss'
+import {URL} from '../config'
+import styles from '../assets/styles/components/Login.scss'
 
 const FormItem = Form.Item;
 
@@ -24,12 +24,7 @@ class LoginFrom extends Component {
         }
     }//初始化 state
 
-    componentWillMount() {
-        this.checkLogin()
-        HTTP.getSitemap(() => {
-            this.getCaptcha()
-        })
-    }//插入 DOM 前
+    componentWillMount() {}//插入 DOM 前
 
     componentDidMount() {
     }//插入 DOM 后
@@ -50,45 +45,13 @@ class LoginFrom extends Component {
     componentWillUnmount() {
     }//卸载前
 
-    getCaptcha = () => {
-        HTTP.captcha((data) => {
-            this.setState({captchaUrl: data.url})
-            this.props.form.setFieldsValue({'key': data.key})
-        })
-    }
-
     login = (e) => {
         e.preventDefault()
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                const user = this.props.form.getFieldsValue()
-                const {remember} = this.props.form.getFieldsValue(['remember'])
-                HTTP.login(user, (data) => {
-                    if (data.token && window.localStorage) {
-                        const storage = window.localStorage
-                        storage.setItem('cacheTime', new Date())
-                        storage.setItem('token', data.token)
-                        storage.setItem('remember', remember)
-                        this.context.router.push(URL.home)
-                    }
-
-                })
-                this.getCaptcha()
+                this.context.router.push(URL.home)
             }
         })
-    }
-
-    checkLogin = () => {
-        if (window.localStorage) {
-            const storage = window.localStorage
-            if (storage.getItem('remember') === 'true') {
-                if ((new Date() - new Date(storage.getItem('cacheTime'))) / (1000 * 60 * 60 * 24) <= 7) {
-                    this.context.router.push(URL.home)
-                } else {
-                    HTTP.loginOut()
-                }
-            }
-        }
     }
 
     render() {
