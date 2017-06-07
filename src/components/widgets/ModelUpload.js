@@ -38,7 +38,7 @@ class ModelUpload extends Component {
     }
 
     onOk = () => {
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 this.setState({isLoading: true})
                 let formData = new FormData()

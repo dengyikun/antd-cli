@@ -2,7 +2,7 @@
  * Created by DengYiKun on 2017/3/10.
  */
 import React, {Component, PropTypes} from 'react'
-import {Spin, Button, Row, Col, Card} from 'antd'
+import {Spin, Button, Row, Col, Card, message} from 'antd'
 import Dropzone from 'react-dropzone'
 import {HTTP} from '../../config'
 
@@ -50,31 +50,36 @@ class ImageList extends Component {
     }
 
     onDrop = (files) => {
-        this.setState({isLoading: true})
-        let formData = new FormData()
-        formData.append('image', files[0])
-        formData.append('name', files[0].name.split('.')[0])
-        formData.append('scene', this.props.scene)
-        HTTP.fetch('POST', 'image', formData, (data) => {
-            let newValue = {...this.props.value}
-            newValue.images = this.props.value && this.props.value.images ?
-                this.props.value.images.slice() : []
-            const image = {
-                image_url: data.relative_url,
-                image_thumb_url: data.relative_thumb_url,
-                caption: data.name
-            }
-            newValue.images.push(image)
-            this.setState({isLoading: false})
-            this.props.onChange(newValue)
-        })
+        if (files.length === 0) {
+            message.error('请上传小于 1M 的图片！')
+        }else {
+            this.setState({isLoading: true})
+            let formData = new FormData()
+            formData.append('image', files[0])
+            formData.append('name', files[0].name.split('.')[0])
+            formData.append('scene', this.props.scene)
+            HTTP.fetch('POST', 'image', formData, (data) => {
+                let newValue = {...this.props.value}
+                newValue.images = this.props.value && this.props.value.images ?
+                    this.props.value.images.slice() : []
+                const image = {
+                    image_url: data.relative_url,
+                    image_thumb_url: data.relative_thumb_url,
+                    image_name: data.image_name,
+                    caption: data.name
+                }
+                newValue.images.push(image)
+                this.setState({isLoading: false})
+                this.props.onChange(newValue)
+            })
+        }
     }
 
     render() {
         return (
             <Spin spinning={this.state.isLoading}>
                 <Dropzone accept='image/png,image/jpg,image/jpeg' style={{display: 'none'}}
-                          multiple={false} ref="dropzone" onDrop={this.onDrop}/>
+                          multiple={false} ref="dropzone" onDrop={this.onDrop} maxSize={1024*1024}/>
                 {
                     !(this.props.total && this.props.value && this.props.value.images &&
                     this.props.value.images.length >= this.props.total.total) &&

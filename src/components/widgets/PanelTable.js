@@ -31,7 +31,9 @@ class PanelTable extends Component {
         // ]
     }//默认 props
 
-    static contextTypes = {}//context 显式注册
+    static contextTypes = {
+        router: PropTypes.object
+    }//context 显式注册
 
     constructor(props) {
         super(props)
@@ -45,20 +47,32 @@ class PanelTable extends Component {
     }//初始化 state
 
     componentWillMount() {
-        this.changPage(1)
+        this.changePage(1)
     }//插入 DOM 前
 
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.refresh !== this.props.refresh) {
-            this.changPage(1)
+            this.changePage(1)
         }
     }//接收新 props
 
-    changPage = (page) => {
+    changePage = (page) => {
         this.setState({isLoading: true})
 
-        const screen = {...this.props.screen, ...this.props.form.getFieldsValue()}
+        const screen = {
+            ...this.context.router.location.query,
+            ...this.props.screen,
+            ...this.props.form.getFieldsValue(),
+        }
+
+        this.context.router.push({
+            pathname: this.context.router.location.pathname,
+            query: {
+                ...this.context.router.location.query,
+                ...this.props.form.getFieldsValue(),
+            }
+        })
 
         HTTP.fetch('GET', this.props.url, null, (data) => {
             this.setState({
@@ -76,7 +90,15 @@ class PanelTable extends Component {
     }
 
     resetScreen = () => {
-        this.props.form.resetFields()
+        let query = this.context.router.location.query
+        this.props.screens.map((screen) => {
+            query[screen.key] = screen.value || ''
+        })
+        this.props.form.setFieldsValue(query)
+        this.context.router.push({
+            pathname: this.context.router.location.pathname,
+            query
+        })
     }
 
     render() {
@@ -87,7 +109,7 @@ class PanelTable extends Component {
             pageSize: this.state.pageSize,
             showQuickJumper: true,
             onChange: (page) => {
-                this.changPage(page)
+                this.changePage(page)
             }
         }
 
@@ -103,9 +125,10 @@ class PanelTable extends Component {
                                     <FormItem {...THEME.formSpan6Layout}
                                               label={screen.label}>
                                         {getFieldDecorator(screen.key, {
-                                            initialValue: screen.value,
+                                            initialValue: this.context.router.location.query[screen.key]
+                                            || screen.value || '',
                                             onChange: (value) => {
-                                                if(screen.onChange) {
+                                                if (screen.onChange) {
                                                     screen.onChange(value, this.props.form)
                                                 }
                                             }
@@ -117,7 +140,7 @@ class PanelTable extends Component {
                             )
                         }
                         <Col span={24} style={{marginBottom: 20}}>
-                            <Button type="primary" onClick={() => this.changPage(1)}>查询</Button>
+                            <Button type="primary" onClick={() => this.changePage(1)}>查询</Button>
                             <Button style={{marginLeft: 24}} onClick={this.resetScreen}>重置</Button>
                         </Col>
                         <Col span={24}>

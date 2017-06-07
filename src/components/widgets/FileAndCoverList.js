@@ -32,7 +32,8 @@ class FileAndCoverList extends Component {
         let newValue = this.props.value.slice()
         newValue.push({
             image_url: '',
-            pdf_url: ''
+            pdf_url: '',
+            image_name: ''
         })
         this.props.onChange(newValue)
     }
@@ -43,18 +44,15 @@ class FileAndCoverList extends Component {
         this.props.onChange(newValue)
     }
 
-    imageChange = (value, index) => {
+    imageChange = (image, index) => {
         let newValue = this.props.value.slice()
-        newValue[index].image_url = value
+        newValue[index].image_url = image.relative_url
+        newValue[index].image_name = image.image_name
         this.props.onChange(newValue)
     }
 
     remove = (index) => {
         let newValue = this.props.value.slice()
-
-
-
-
         newValue.splice(index, 1)
         debugger
         this.props.onChange(newValue)
@@ -84,7 +82,7 @@ class FileAndCoverList extends Component {
                                         <Col span={12}>
                                             <ImageURL scene={'common'} value={item.image_url}
                                                       style={{width: '100%', height: '250px'}}
-                                                      onChange={(value) => this.imageChange(value, index)}/>
+                                                      onChange={(value, image) => this.imageChange(image, index)}/>
                                         </Col>
                                     </Row>
                                     <Button style={{width: '100%', height: '40px', border: 'none'}}

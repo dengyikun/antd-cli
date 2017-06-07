@@ -2,7 +2,7 @@
  * Created by DengYiKun on 2017/2/25.
  */
 import React, {Component, PropTypes} from 'react'
-import {Spin} from 'antd'
+import {Spin, message} from 'antd'
 import Dropzone from 'react-dropzone'
 import {HTTP, ENUM} from '../../config'
 import DEFAULT from '../../assets/images/default.png'
@@ -43,22 +43,26 @@ class Image extends Component {
     }
 
     onDrop = (files) => {
-        this.setState({isLoading: true})
-        let formData = new FormData()
-        formData.append('image', files[0])
-        formData.append('name', files[0].name)
-        formData.append('scene', this.props.scene)
-        HTTP.fetch('POST', 'image', formData, (image) => {
-            this.setState({isLoading: false, imageSrc: image.image})
-            this.props.onChange(image.url)
-        })
+        if (files.length === 0) {
+            message.error('请上传小于 1M 的图片！')
+        }else {
+            this.setState({isLoading: true})
+            let formData = new FormData()
+            formData.append('image', files[0])
+            formData.append('name', files[0].name)
+            formData.append('scene', this.props.scene)
+            HTTP.fetch('POST', 'image', formData, (image) => {
+                this.setState({isLoading: false, imageSrc: image.image})
+                this.props.onChange(image.url)
+            })
+        }
     }
 
     render() {
         return (
             <Dropzone style={{width: 200}} {...this.props}
                       onDrop={this.onDrop} multiple={false}
-                      accept='image/png,image/jpg,image/jpeg'>
+                      accept='image/png,image/jpg,image/jpeg' maxSize={1024*1024}>
                 <Spin spinning={this.state.isLoading} tip="loading...">
                     <img src={this.state.imageSrc}
                          style={{width: 200, ...this.props.style}}

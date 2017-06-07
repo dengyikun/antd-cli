@@ -69,6 +69,12 @@ class HttpSearchSelect extends Component {
         this.props.onChange(value, data)
     }
 
+    onBlur = () => {
+        if (this.props.valueKey === 'url'&& !/https?:\/\//.test(this.props.value)) {
+            this.props.onChange('')
+        }
+    }
+
     render() {
         return (
             <Select placeholder={'请输入名称进行搜索'}
@@ -79,7 +85,8 @@ class HttpSearchSelect extends Component {
                     combobox
                     allowClear
                     showArrow={false}
-                    filterOption={false}>
+                    filterOption={false}
+                    onBlur={this.onBlur}>
                 {
                     this.state.data.map((item) => {
                         return <Option value={item[this.props.valueKey]}

@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Form, Row, Col, Input} from 'antd'
-import {THEME} from '../../config'
+import {THEME, TOOL} from '../../config'
 
 const Item = Form.Item
 
@@ -21,9 +21,13 @@ class FormItems extends Component {
             isRequired: false,
             rules: [],
             span: 12,//24
+            formSpan: {},
             onChange: null,
             value: null,
-            valuePropName: 'value'
+            valuePropName: 'value',
+            trigger: 'onChange',
+            validateTrigger: 'onChange',
+            items: [],
         }],
         buttons: []
     }//默认 props
@@ -40,44 +44,49 @@ class FormItems extends Component {
         }
     }//初始化 state
 
-    render() {
+    getFormItem = (formItem) => {
         const {getFieldDecorator} = this.props.form
+        let span = formItem.span !== undefined ? {span: formItem.span} : THEME.formSpan12
+        let formSpan = formItem.formSpan || (
+                formItem.span === 24 ? THEME.formSpan24Layout : THEME.formSpan12Layout
+            )
+        let rules = (formItem.rules || []).slice()
+        rules.push({
+            required: formItem.isRequired, message: '这是必填项！'
+        })
+        return Array.isArray(formItem.items) ?
+            <Col {...span} key={formItem.key}>
+                {
+                    formItem.items.map((item) => this.getFormItem(item))
+                }
+            </Col> :
+            <Col {...span} key={formItem.key}>
+                <Item {...formSpan} label={formItem.label}>
+                    {getFieldDecorator(formItem.key, {
+                        valuePropName: formItem.valuePropName || 'value',
+                        initialValue: formItem.value ?
+                            formItem.value(this.props.data) :
+                            TOOL.getValue(this.props.data, formItem.key),
+                        rules,
+                        trigger: formItem.trigger || 'onChange',
+                        validateTrigger: formItem.validateTrigger || 'onChange',
+                        onChange: (value, data) => {
+                            if(formItem.onChange) {
+                                formItem.onChange(value, this.props.form, data)
+                            }
+                        }
+                    })(
+                        formItem.object || <Input/>
+                    )}
+                </Item>
+            </Col>
+    }
+
+    render() {
         return (
             <Row>
                 {
-                    this.props.formItems.map((formItem) => {
-                        let rules = (formItem.rules ? formItem.rules : []).slice()
-                        rules.push({
-                            required: formItem.isRequired, message: '这是必填项！'
-                        })
-                        let span = THEME.formSpan12
-                        if(formItem.span === 24) {
-                            span = {span: 24}
-                        }else if (formItem.span === 0) {
-                            span = {span: 0}
-                        }
-                        return <Col {...span} key={formItem.key}>
-                            <Item {...(formItem.span === 24 ?
-                                THEME.formSpan24Layout :
-                                THEME.formSpan12Layout)}
-                                  label={formItem.label}>
-                                {getFieldDecorator(formItem.key, {
-                                    valuePropName: formItem.valuePropName || 'value',
-                                    initialValue: formItem.value ?
-                                        formItem.value(this.props.data) :
-                                        this.props.data[formItem.key],
-                                    rules,
-                                    onChange: (value, data) => {
-                                        if(formItem.onChange) {
-                                            formItem.onChange(value, this.props.form, data)
-                                        }
-                                    }
-                                })(
-                                    formItem.object || <Input/>
-                                )}
-                            </Item>
-                        </Col>
-                    })
+                    this.props.formItems.map((formItem) => this.getFormItem(formItem))
                 }
             </Row>
         )

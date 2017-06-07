@@ -11,7 +11,7 @@ class EnumSelect extends Component {
         enum: PropTypes.any.isRequired,
         all: PropTypes.string,
         placeholder: PropTypes.string,
-        multiple: PropTypes.any
+        multiple: PropTypes.bool
     }//props 类型检查
 
     static defaultProps = {}//默认 props

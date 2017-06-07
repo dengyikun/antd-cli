@@ -66,7 +66,7 @@ class ModelForm extends Component {
     }
 
     onOk = () => {
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 let formData = this.props.form.getFieldsValue()
                 this.setState({isLoading: true})
@@ -74,11 +74,15 @@ class ModelForm extends Component {
                     HTTP.post(this.props.url, formData, (data) => {
                         message.success(`${this.props.name}添加成功！`)
                         this.props.onCancel()
+                    }, () => {
+                        this.setState({isLoading: false})
                     })
                 } else {
                     HTTP.patch(this.props.url, formData, (data) => {
                         message.success(`${this.props.name}修改成功！`)
                         this.props.onCancel()
+                    }, () => {
+                        this.setState({isLoading: false})
                     })
                 }
             }

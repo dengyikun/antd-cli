@@ -17,6 +17,11 @@ class PanelForm extends Component {
         valid: PropTypes.object,
         buttons: PropTypes.array,
         hideBack: PropTypes.bool,
+        hideSubmit: PropTypes.bool,
+        onSubmit: PropTypes.func,
+        submitText: PropTypes.string,
+        isLoading: PropTypes.bool,
+        refresh: PropTypes.object,
     }//props 类型检查
 
     static defaultProps = {}//默认 props
@@ -35,18 +40,29 @@ class PanelForm extends Component {
 
     componentWillMount() {
         if (!this.props.isAdd) {
-            if (/https?:\/\//.test(this.props.url)) {
-                this.setState({isLoading: true})
-                HTTP.get(this.props.url, (data) => {
-                    this.setState({data, isLoading: false})
-                }, () => {
-                    this.setState({isLoading: false})
-                })
-            } else {
-                this.back()
-            }
+            this.getData()
         }
     }//插入 DOM 前
+
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.refresh !== this.props.refresh) {
+            this.getData()
+        }
+    }//接收新 props
+
+    getData = () => {
+        if (/https?:\/\//.test(this.props.url)) {
+            this.setState({isLoading: true})
+            HTTP.get(this.props.url, (data) => {
+                this.setState({data, isLoading: false})
+            }, () => {
+                this.setState({isLoading: false})
+            })
+        } else {
+            this.back()
+        }
+    }
 
     back = () => {
         if (!this.props.hideBack) {
@@ -54,28 +70,36 @@ class PanelForm extends Component {
         }
     }
 
-    saveData = () => {
-        this.props.form.validateFields((err, values) => {
+    onSubmit = () => {
+        this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 let formData = this.props.form.getFieldsValue()
-                this.setState({isLoading: true})
-                if (this.props.isAdd) {
-                    HTTP.post(this.props.url, formData, (data) => {
-                        message.success(`${this.props.name}添加成功！`)
-                        this.back()
-                    }, () => {
-                        this.setState({isLoading: false})
-                    })
+                if (this.props.onSubmit) {
+                    this.props.onSubmit(formData, this.saveData)
                 } else {
-                    HTTP.patch(this.props.url, formData, (data) => {
-                        message.success(`${this.props.name}修改成功！`)
-                        this.back()
-                    }, () => {
-                        this.setState({isLoading: false})
-                    })
+                    this.saveData(formData)
                 }
             }
         })
+    }
+
+    saveData = (formData) => {
+        this.setState({isLoading: true})
+        if (this.props.isAdd) {
+            HTTP.post(this.props.url, formData, (data) => {
+                message.success(`${this.props.name}添加成功！`)
+                this.back()
+            }, () => {
+                this.setState({isLoading: false})
+            })
+        } else {
+            HTTP.patch(this.props.url, formData, (data) => {
+                message.success(`${this.props.name}修改成功！`)
+                this.back()
+            }, () => {
+                this.setState({isLoading: false})
+            })
+        }
     }
 
     invalidData = () => {
@@ -108,8 +132,8 @@ class PanelForm extends Component {
 
     render() {
         return (
-            <Spin spinning={this.state.isLoading}>
-                <Form>
+            <Spin spinning={this.props.isLoading || this.state.isLoading}>
+                <Form key={this.props.refresh}>
                     <span>请认真填写</span>
                     <hr/>
                     <h3>基本信息</h3>
@@ -141,8 +165,11 @@ class PanelForm extends Component {
                                 <Button size="large" style={{float: 'right', marginLeft: 20}}
                                         onClick={this.back}>返回</Button>
                             }
-                            <Button type="primary" onClick={this.saveData} size="large"
-                                    style={{float: 'right'}}>保存</Button>
+                            {
+                                !this.props.hideSubmit &&
+                                <Button type="primary" onClick={this.onSubmit} size="large"
+                                        style={{float: 'right'}}>{this.props.submitText || '保存'}</Button>
+                            }
                         </Col>
                     </Row>
                 </Form>

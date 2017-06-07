@@ -25,6 +25,7 @@ class DatePickerStr extends Component {
         return (
             <DatePicker {...this.props}
                         onChange={(date, dateString) => {
+                            dateString = date ? dateString : null
                             this.props.onChange(dateString)
                         }}
                         value={
