@@ -1,17 +1,17 @@
 {
-  "name": "antd-test",
-  "version": "1.0.0",
-  "description": "tengyi",
-  "main": "index.js",
+  "name": "antd-cil",
+  "version": "0.0.2",
+  "description": "antd-cil",
+  "main": "main.js",
   "scripts": {
-    "start": "set NODE_ENV=development&&webpack-dev-server --hot --inline",
-    "build": "set NODE_ENV=production&&webpack --progress",
+    "win": "set NODE_ENV=local&&webpack-dev-server --port 8080 --hot --inline",
+    "mac": "export NODE_ENV=local&&webpack-dev-server --port 8080 --hot --inline",
+    "build": "webpack --progress",
     "test": "node test/test"
   },
   "author": "dengyikun",
   "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "antd": "^2.7.0",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
@@ -22,8 +22,9 @@
     "babel-preset-stage-1": "^6.16.0",
     "clean-webpack-plugin": "^0.1.15",
     "css-loader": "^0.26.1",
-    "extract-text-webpack-plugin": "^1.0.1",
+    "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.9.0",
+    "history": "^4.6.3",
     "html-webpack-plugin": "^2.26.0",
     "isomorphic-fetch": "^2.2.1",
     "json-loader": "^0.5.4",
@@ -32,19 +33,18 @@
     "moment": "^2.17.1",
     "node-sass": "^4.3.0",
     "react": "^15.4.2",
-    "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-dropzone": "^3.10.0",
     "react-redux": "^5.0.2",
-    "react-router": "^3.0.0",
+    "react-router-dom": "^4.1.1",
     "react-scrollbar": "^0.5.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "sass-loader": "^4.1.1",
-    "selenium-webdriver": "^3.3.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2"
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.5.1",
+    "webpack-merge": "^4.1.0"
   }
 }
