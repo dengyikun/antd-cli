@@ -21,10 +21,4 @@ module.exports = {
             disable: true
         }),
     ],
-    // devServer: {
-    //     port: 8080,
-    //     hot: true,
-    //     inline: true,
-    //     historyApiFallback: true
-    // },
 }

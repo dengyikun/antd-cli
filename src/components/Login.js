@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Form, Icon, Input, Button, Checkbox, Row, Col} from 'antd';
-import {URL} from '../config'
+import {ROUTES} from '../config'
 import styles from '../assets/styles/components/Login.scss'
 
 const FormItem = Form.Item;
@@ -49,7 +49,7 @@ class LoginFrom extends Component {
         e.preventDefault()
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.context.router.push(URL.home)
+                this.context.router.push(ROUTES.home.url)
             }
         })
     }

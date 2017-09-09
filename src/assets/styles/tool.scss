@@ -3,24 +3,6 @@ $gap_md: 16px;
 $gap_sm: 8px;
 $gap_xs: 4px;
 
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius: $radius;
-  border-radius: $radius;
-}
-
-@mixin border-custom($ver, $hor, $radius) {
-  -webkit-border-#{$ver}-#{$hor}-radius: $radius;
-  -moz-border-radius-#{$ver}#{$hor}: $radius;
-  border-#{$ver}-#{$hor}-radius: $radius;
-}
-
-@mixin box-shadow($shadow){
-  -webkit-box-shadow: $shadow;
-  -moz-box-shadow: $shadow;
-  box-shadow: $shadow;
-}
-
 @mixin clearfix{
   &::after {
     clear: both;

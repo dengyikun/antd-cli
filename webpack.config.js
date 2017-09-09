@@ -34,7 +34,7 @@ const commonConfig = {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: 'css-loader?module&localIdentName=[local]-[hash:6]!sass-loader'
+                    use: 'css-loader?module&localIdentName=[local]-[hash:6]!postcss-loader!sass-loader'
                 })
             },
             {
@@ -67,6 +67,9 @@ const commonConfig = {
             allChunks: true
         }),
     ],
+    devServer: {
+        historyApiFallback: true
+    },
 }
 
 module.exports = process.env.NODE_ENV === 'local' ?

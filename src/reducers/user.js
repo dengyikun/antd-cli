@@ -4,6 +4,7 @@
 import * as userAction from '../actions/userAction'
 
 const initialState = {
+    isLogin: false,
     url: '',
     name: '',
     nick_name: '',
@@ -14,12 +15,12 @@ const initialState = {
     filiale: '',
     projects: [],
 }
-export default (state = initialState, action) => {
+export default (state = {...initialState}, action) => {
     switch (action.type) {
         case userAction.SETUSER:
             return {...state, ...action.payload}
         case userAction.USERLOGOUT:
-            return {...state, initialState}
+            return {...initialState}
         default:
             return state
     }

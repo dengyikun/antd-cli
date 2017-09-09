@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {Layout, Menu, Icon} from 'antd'
 import Scrollbar from 'react-scrollbar'
-import {URL} from '../config'
+import {ROUTES} from '../config'
 import styles from '../assets/styles/components/Menu.scss'
 
 const {Sider} = Layout
@@ -13,28 +13,22 @@ const mapStateToProps = (state) => ({
     collapsed: state.ui.menuCollapsed,
 })
 
-class MenuUI extends React.Component {
+class AppMenu extends React.Component {
     static propTypes = {
-        pathname: PropTypes.string.isRequired,
         collapsed: PropTypes.bool.isRequired,
     }
-    static contextTypes = {
-        router: React.PropTypes.object
-    }
+    static contextTypes = {}
 
     constructor(props) {
         super(props)
         this.state = {
             menus: [
                 {
-                    name: '首页',
+                    name: ROUTES.home.name,
                     icon: 'home',
-                    url: URL.home,
-                    key: 'M_01',
-                    children: []
+                    url: ROUTES.home.url
                 },
             ],
-            visibleMenus: ['M_01'],
             menuSelected: [],
             menuOpened: [],
         }
@@ -44,26 +38,28 @@ class MenuUI extends React.Component {
         this.setMenuSelect()
     }//插入 DOM 前
 
-    componentWillReceiveProps(nextProps) {
-        this.setMenuSelect()
-    }//接收新 props
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.location.pathname !== this.props.location.pathname) {
+            this.setMenuSelect()
+        }
+    }//更新后
 
     setMenuSelect = () => {
-        const router = this.context.router
+        const pathname = this.props.location.pathname
         let selected = ''
         let opened = ''
         this.state.menus.map((menu) => {
-            if (menu.children.length === 0) {
-                if (router.isActive(menu.url)) {
-                    selected = menu.key
-                }
-            } else {
+            if (menu.children) {
                 menu.children.map((child) => {
-                    if (router.isActive(child.url)) {
-                        selected = child.key
-                        opened = menu.key
+                    if (pathname === child.url) {
+                        selected = child.url
+                        opened = menu.url
                     }
                 })
+            } else {
+                if (pathname === menu.url) {
+                    selected = menu.url
+                }
             }
         })
         this.setState({menuSelected: [selected], menuOpened: [opened]})
@@ -88,45 +84,33 @@ class MenuUI extends React.Component {
                           openKeys={this.state.menuOpened}
                           onOpenChange={this.onOpenChange}>
                         {
-                            this.state.menus.map((menu) => {
-                                if (true || this.state.visibleMenus.includes(menu.key)) {
-                                    if (menu.children.length === 0) {
-                                        return (
-                                            <Menu.Item key={menu.key}>
-                                                <Link to={menu.url}>
-                                                    <Icon className={styles.icon} type={menu.icon}/>
-                                                    <span className={styles.title}>
-                                                    {menu.name}
-                                                </span>
-                                                </Link>
-                                            </Menu.Item>
-                                        )
-                                    } else {
-                                        return (
-                                            <SubMenu key={menu.key} title={
-                                                <span>
-                                                    <Icon className={styles.icon} type={menu.icon}/>
-                                                    <span className={styles.title}>{menu.name}</span>
-                                                </span>
-                                            }>
-                                                {
-                                                    menu.children.map((child) => {
-                                                        if (true || this.state.visibleMenus.includes(child.key)) {
-                                                            return (
-                                                                <Menu.Item key={child.key}>
-                                                                    <Link to={child.url}>
-                                                                        {child.name}
-                                                                    </Link>
-                                                                </Menu.Item>
-                                                            )
-                                                        }
-                                                    })
-                                                }
-                                            </SubMenu>
-                                        )
-                                    }
-                                }
-                            })
+                            this.state.menus.map((menu) =>
+                                menu.children ?
+                                    <SubMenu key={menu.key} title={
+                                        <span>
+                                            <Icon className={styles.icon} type={menu.icon}/>
+                                            <span className={styles.title}>{menu.name}</span>
+                                        </span>
+                                    }>
+                                        {
+                                            menu.children.map((child) =>
+                                                <Menu.Item key={child.url}>
+                                                    <Link to={child.url}>
+                                                        {child.name}
+                                                    </Link>
+                                                </Menu.Item>
+                                            )
+                                        }
+                                    </SubMenu> :
+                                    <Menu.Item key={menu.url}>
+                                        <Link to={menu.url}>
+                                            <Icon className={styles.icon} type={menu.icon}/>
+                                            <span className={styles.title}>
+                                                {menu.name}
+                                            </span>
+                                        </Link>
+                                    </Menu.Item>
+                            )
                         }
                     </Menu>
                 </Scrollbar>
@@ -135,8 +119,6 @@ class MenuUI extends React.Component {
     }
 }
 
-const AppMenu = connect(
+export default connect(
     mapStateToProps
-)(MenuUI)
-
-export default AppMenu
+)(AppMenu)

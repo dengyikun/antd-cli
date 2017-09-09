@@ -33,7 +33,7 @@ $headerHeight: 64px;
       width: 40px;
       height: 40px;
       margin: 12px $gap_md;
-      @include border-radius(50%)
+      border-radius: 50%;
     }
 
     .notice {
@@ -46,7 +46,7 @@ $headerHeight: 64px;
         line-height: 40px;
         background: #ffffff;
         color: #999;
-        @include border-radius(50%);
+        border-radius: 50%;
       }
 
       sup {
@@ -70,7 +70,7 @@ $headerHeight: 64px;
       width: 70px;
       height: 70px;
       margin: 0 auto;
-      @include border-radius(50%)
+      border-radius: 50%;
     }
 
     .popoverUserName {

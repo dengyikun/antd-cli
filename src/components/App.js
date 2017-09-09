@@ -1,97 +1,89 @@
 /**
- * Created by dyk on 2017/1/14.
+ * Created by 義堃 on 2017/7/5.
  */
 import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import { Link } from 'react-router'
-import AppMenu from './Menu'
+import {createStore, applyMiddleware} from 'redux'
+import reducers from '../reducers'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
+import {BrowserRouter, Route, Redirect} from 'react-router-dom'
+import {createBrowserHistory} from 'history'
+import {Spin, Layout, Row, Col} from 'antd'
+import {HTTP, ROUTES} from '../config'
+import Header from './Header'
+import Menu from './Menu'
 import AppHeader from './Header'
-import {Layout, Spin, Row, Col, Breadcrumb} from 'antd'
-import uiAction from '../actions/uiAction'
-import styles from '../assets/styles/components/App.scss'
+import Style from '../assets/styles/components/App.scss'
 
-const {Content} = Layout
+const Content = Layout.Content
 
-const mapStateToProps = (state) => ({
-    appLoading: state.ui.appLoading
-})
+const store = createStore(
+    reducers,
+    applyMiddleware(thunk)
+)
 
-const mapDispatchToProps = (dispatch) => ({
-    uiAction: bindActionCreators(uiAction, dispatch),
-})
 
-class AppUI extends Component {
-    static propTypes = {
-        uiAction: PropTypes.object.isRequired,
-    }
+class App extends Component {
+    static propTypes = {}//props 类型检查
 
-    static contextTypes = {
-        router: React.PropTypes.object
-    }
+    static defaultProps = {}//默认 props
 
+    static contextTypes = {}//context 显式注册
 
     constructor(props) {
         super(props)
         this.state = {
-            appLoading: true
+            isLoading: false,
+            quotation: this.defaultQuotation
         }
-    }
+    }//初始化 state
 
     componentWillMount() {
-        this.setState({appLoading: false})
+        //HTTP.getSitemap(() => {
+        //    this.setState({isLoading: false})
+        //    return true
+        //})
     }//插入 DOM 前
 
-    getContentName = () => {
-        const routes = this.context.router.routes.slice()
-        for (let i = routes.length - 1; i >= 0; i--) {
-            if (routes[i].breadcrumbName) {
-                return routes[i].breadcrumbName
-            }
-        }
-    }
-
-    itemRender = (route, params, routes, paths) => {
-        if (route.breadcrumbName === 'Home') {
-            paths = ['home']
-        }
-        return <Link to={paths.join('')}>{route.breadcrumbName}</Link>
-    }
+    componentWillReceiveProps(nextProps) {
+    }//接收新 props
 
     render() {
         return (
-            this.state.appLoading ?
-                <Spin className={styles.loading}/> :
-                <Layout className={styles.main + ' ant-layout-has-sider'} size="large">
-                    <AppMenu pathname={this.props.location.pathname}/>
-                    <Layout>
-                        <AppHeader/>
-                        <Content className={styles.content}>
-                            <div className={styles.header}>
-                                <Row gutter={20}>
-                                    <Col md={8} xs={24}>
-                                        <h1>{this.getContentName()}</h1>
-                                    </Col>
-                                    <Col md={16} xs={24}>
-                                        <Breadcrumb itemRender={this.itemRender}
-                                                    routes={this.context.router.routes}
-                                                    params={this.context.router.params}
-                                                    className={styles.breadcrumb}/>
-                                    </Col>
-                                </Row>
-                            </div>
-                            {this.props.children}
-                        </Content>
-                    </Layout>
-                </Layout>
-
+            <BrowserRouter history={createBrowserHistory()}>
+                <Provider store={store}>
+                    {
+                        this.state.isLoading ?
+                            <Spin className={Style.loading} spinning={true}/> :
+                            <Layout className={Style.main + ' ant-layout-has-sider'} size="large">
+                                <Route path="/" component={Menu}/>
+                                <Layout>
+                                    <AppHeader/>
+                                    <Content className={Style.content}>
+                                    </Content>
+                                </Layout>
+                            </Layout>
+                    }
+                </Provider>
+            </BrowserRouter>
         )
-    }
-}
+    }//渲染
 
-const App = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AppUI)
+    componentDidMount() {
+    }//插入 DOM 后
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return true
+    }//更新判断
+
+    componentWillUpdate(nextProps, nextState) {
+    }//更新前
+
+    componentDidUpdate(prevProps, prevState) {
+    }//更新后
+
+    componentWillUnmount() {
+    }//卸载前
+}
 
 export default App

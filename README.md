@@ -1,19 +1,21 @@
 ### 使用说明
 
 ``` bash
-# 必要：node 6.0+ npm 3.0+
-# 进入前端项目
-cd frontend
+# 运行环境：node 6.0+ npm 3.0+
 
 # 项目初始化安装
 npm install
 
-# 热重载开发
-npm run start
+# 不同服务器的后端地址请在 webpack.*.js 中修改 WEBPACK_HOST ,注意结尾没有斜杠
+# dev 测试服务器
+# local 开发服务器
+# pro 产品服务器
 
-# 自动化 E2E 测试（需要安装 Chrome 、 selenium 的 chrome-driver ）
-npm run test
+# 热重载开发，对应 windows 与 mac 环境
+npm run win
+npm run mac
 
-# 构建命令，根目录下生成build文件夹
+# 构建命令，根目录下生成 build_dev 与 build_pro 文件夹，对应测试服务器与产品服务器
+# 部署时取相应目录文件到服务器即可
 npm run build
 ```
