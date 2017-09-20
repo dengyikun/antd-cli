@@ -1,14 +1,12 @@
 import React, {Compontent, PropTypes} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {Layout, Icon, Popover, Button} from 'antd'
+import {Icon, Popover, Button} from 'antd'
 import uiAction from '../actions/uiAction'
 import userAction from '../actions/userAction'
 import userAvatar from '../assets/images/user-avatar.png'
 import {HTTP} from '../config'
-import styles from '../assets/styles/components/Header.scss'
-
-const {Header} = Layout
+import Style from '../assets/styles/components/Header.scss'
 
 const mapStateToProps = (state) => ({
     menuCollapsed: state.ui.menuCollapsed,
@@ -67,30 +65,30 @@ class HeaderUI extends React.Component {
     render() {
         const {menuCollapsed, uiAction, user} = this.props
         return (
-            <Header className={styles.header}>
-                <Icon className={styles.trigger} onClick={uiAction.collapsed}
+            <header className={Style.header}>
+                <Icon className={Style.trigger} onClick={uiAction.collapsed}
                       type={menuCollapsed ? 'menu-unfold' : 'menu-fold'}/>
-                <Popover placement="bottomRight" arrowPointAtCenter overlayClassName={styles.popoverUser}
+                <Popover placement="bottomRight" arrowPointAtCenter overlayClassName={Style.popoverUser}
                          content={
                              <div>
-                                 <img className={styles.popoverUserAvatar} src={this.state.avatar}
+                                 <img className={Style.popoverUserAvatar} src={this.state.avatar}
                                       onError={(e) => {e.target.src=userAvatar}}/>
-                                 <div className={styles.popoverUserName}>
+                                 <div className={Style.popoverUserName}>
                                      {user.name}
                                  </div>
-                                 <div className={styles.popoverUserBtn}>
+                                 <div className={Style.popoverUserBtn}>
                                      <Button type="primary" onClick={this.setMyInfo}>设置</Button>
                                      &nbsp;
                                      <Button type="ghost" onClick={this.logout}>退出</Button>
                                  </div>
                              </div>
                          }>
-                    <div className={styles.item}>
-                        <img className={styles.user} src={this.state.avatar}
+                    <div className={Style.item}>
+                        <img className={Style.user} src={this.state.avatar}
                              onError={(e) => {e.target.src=userAvatar}}/>
                     </div>
                 </Popover>
-            </Header>
+            </header>
         )
     }
 }

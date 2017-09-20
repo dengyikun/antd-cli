@@ -2,26 +2,28 @@
  * Created by 義堃 on 2017/7/5.
  */
 import React, {Component, PropTypes} from 'react'
-import {createStore, applyMiddleware} from 'redux'
-import reducers from '../reducers'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 import {BrowserRouter, Route, Redirect} from 'react-router-dom'
 import {createBrowserHistory} from 'history'
-import {Spin, Layout, Row, Col} from 'antd'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import {Spin, Layout} from 'antd'
 import {HTTP, ROUTES} from '../config'
-import Header from './Header'
+import uiAction from '../actions/uiAction'
+import Login from './Login'
 import Menu from './Menu'
-import AppHeader from './Header'
+import Header from './Header'
+import Home from './Home'
 import Style from '../assets/styles/components/App.scss'
 
 const Content = Layout.Content
 
-const store = createStore(
-    reducers,
-    applyMiddleware(thunk)
-)
+const mapStateToProps = (state) => ({
+    user: state.user,
+})
 
+const mapDispatchToProps = (dispatch) => ({
+    uiAction: bindActionCreators(uiAction, dispatch),
+})
 
 class App extends Component {
     static propTypes = {}//props 类型检查
@@ -34,7 +36,6 @@ class App extends Component {
         super(props)
         this.state = {
             isLoading: false,
-            quotation: this.defaultQuotation
         }
     }//初始化 state
 
@@ -50,22 +51,25 @@ class App extends Component {
 
     render() {
         return (
-            <BrowserRouter history={createBrowserHistory()}>
-                <Provider store={store}>
-                    {
-                        this.state.isLoading ?
-                            <Spin className={Style.loading} spinning={true}/> :
-                            <Layout className={Style.main + ' ant-layout-has-sider'} size="large">
-                                <Route path="/" component={Menu}/>
-                                <Layout>
-                                    <AppHeader/>
-                                    <Content className={Style.content}>
-                                    </Content>
-                                </Layout>
+            this.state.isLoading ?
+                <Spin className={Style.loading} spinning={true}/> :
+                this.props.user.isLogin ?
+                    <BrowserRouter history={createBrowserHistory()}>
+                        <Layout className={Style.main + ' ant-layout-has-sider'} size="large">
+                            <Route path="/" exact
+                                   component={() => <Redirect to={ROUTES.home.url}/>}/>
+                            <Route path="/" component={Menu}/>
+                            <Layout>
+                                <Header/>
+                                <Content className={Style.content}>
+                                    <div className={Style.contentBody}>
+                                        <Route path={ROUTES.home.url} component={Home}/>
+                                    </div>
+                                </Content>
                             </Layout>
-                    }
-                </Provider>
-            </BrowserRouter>
+                        </Layout>
+                    </BrowserRouter> :
+                    <Login/>
         )
     }//渲染
 
@@ -86,4 +90,7 @@ class App extends Component {
     }//卸载前
 }
 
-export default App
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App)

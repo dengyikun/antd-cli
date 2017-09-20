@@ -8,6 +8,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')//独立样式�
 
 module.exports = {
     output: {
+        publicPath: '/',
         filename: '[name].[hash:8].js'
     },
     plugins: [

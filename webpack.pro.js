@@ -13,6 +13,7 @@ const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin//混淆压缩
 module.exports = {
     output: {
         path: BUILD_PATH,
+        publicPath: '/',
         filename: '[name].[hash:8].js'
     },
     plugins: [

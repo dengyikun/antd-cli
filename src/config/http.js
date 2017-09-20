@@ -76,6 +76,8 @@ const fetchEnca = (type, url, data, callback, urlParam, errorCallback, isOpen) =
         })
 }
 
+const getUrl = (key) => window.sitemap[key]
+
 const login = (data, callback) => {
     fetchEnca('POST', 'token_login', data, (callbackData) => {
         if (callbackData.token && window.localStorage) {
@@ -137,6 +139,7 @@ export default {
             }
         }, null, null, true)
     },
+    getUrl,
     login,
     loginOut,
     checkLogin,

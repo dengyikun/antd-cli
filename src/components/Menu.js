@@ -1,16 +1,22 @@
 import React, {Component, PropTypes} from 'react'
+import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Layout, Menu, Icon} from 'antd'
 import Scrollbar from 'react-scrollbar'
 import {ROUTES} from '../config'
-import styles from '../assets/styles/components/Menu.scss'
+import uiAction from '../actions/uiAction'
+import Style from '../assets/styles/components/Menu.scss'
 
 const {Sider} = Layout
 const SubMenu = Menu.SubMenu
 
 const mapStateToProps = (state) => ({
     collapsed: state.ui.menuCollapsed,
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    uiAction: bindActionCreators(uiAction, dispatch),
 })
 
 class AppMenu extends React.Component {
@@ -44,6 +50,12 @@ class AppMenu extends React.Component {
         }
     }//更新后
 
+    openMenu = () => {
+        if (this.props.collapsed) {
+            this.props.uiAction.openMenu()
+        }
+    }
+
     setMenuSelect = () => {
         const pathname = this.props.location.pathname
         let selected = ''
@@ -66,30 +78,38 @@ class AppMenu extends React.Component {
     }
 
     onOpenChange = (openKeys) => {
-        openKeys.map((key, index) => {
-            if (this.state.menuOpened.includes(key)) {
-                openKeys.splice(index, 1)
+        if (!this.props.collapsed) {
+            if (openKeys.length == 1) {
+                this.setState({menuOpened: openKeys})
+            } else if (openKeys.length > 1) {
+                openKeys.map((key, index) => {
+                    if (this.state.menuOpened.includes(key)) {
+                        openKeys.splice(index, 1)
+                    }
+                })
+                this.setState({menuOpened: openKeys})
             }
-        })
-        this.setState({menuOpened: openKeys})
+        }
     }
 
     render() {
         return (
-            <Sider trigger={null} collapsible collapsed={this.props.collapsed}>
-                <div className={styles.logo}/>
-                <Scrollbar className={styles.menu}>
-                    <Menu selectedKeys={this.state.menuSelected} theme="dark"
+            <Sider trigger={null} collapsible collapsed={this.props.collapsed}
+                   onClick={this.openMenu}>
+                <div className={Style.logo}/>
+                <Scrollbar className={Style.menu}>
+                    <Menu theme="dark"
                           mode={this.props.collapsed ? 'vertical' : 'inline'}
+                          selectedKeys={this.state.menuSelected}
                           openKeys={this.state.menuOpened}
                           onOpenChange={this.onOpenChange}>
                         {
                             this.state.menus.map((menu) =>
                                 menu.children ?
-                                    <SubMenu key={menu.key} title={
+                                    <SubMenu key={menu.url} title={
                                         <span>
-                                            <Icon className={styles.icon} type={menu.icon}/>
-                                            <span className={styles.title}>{menu.name}</span>
+                                            <Icon className={Style.icon} type={menu.icon}/>
+                                            <span className={Style.title}>{menu.name}</span>
                                         </span>
                                     }>
                                         {
@@ -104,8 +124,8 @@ class AppMenu extends React.Component {
                                     </SubMenu> :
                                     <Menu.Item key={menu.url}>
                                         <Link to={menu.url}>
-                                            <Icon className={styles.icon} type={menu.icon}/>
-                                            <span className={styles.title}>
+                                            <Icon className={Style.icon} type={menu.icon}/>
+                                            <span className={Style.title}>
                                                 {menu.name}
                                             </span>
                                         </Link>
@@ -120,5 +140,6 @@ class AppMenu extends React.Component {
 }
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(AppMenu)

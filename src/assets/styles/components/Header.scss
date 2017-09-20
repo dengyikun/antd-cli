@@ -57,6 +57,7 @@ $headerHeight: 64px;
 }
 
 .popoverUser {
+  text-align: center;
 
   :global(.ant-popover-arrow::after) {
     border-bottom-color: #108ee9 !important;

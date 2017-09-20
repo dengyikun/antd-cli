@@ -9,9 +9,9 @@ const FormItem = Form.Item
 
 class PanelTable extends Component {
     static propTypes = {
-        name: PropTypes.string.isRequired,
         columns: PropTypes.array.isRequired,
         url: PropTypes.string.isRequired,
+        name: PropTypes.string,
         add: PropTypes.func,
         screens: PropTypes.array,
         screen: PropTypes.object,
@@ -31,9 +31,7 @@ class PanelTable extends Component {
         // ]
     }//默认 props
 
-    static contextTypes = {
-        router: PropTypes.object
-    }//context 显式注册
+    static contextTypes = {}//context 显式注册
 
     constructor(props) {
         super(props)
@@ -53,26 +51,17 @@ class PanelTable extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.refresh !== this.props.refresh) {
-            this.changePage(1)
+            this.changePage()
         }
     }//接收新 props
 
     changePage = (page) => {
+        page = page || this.state.current
         this.setState({isLoading: true})
-
         const screen = {
-            ...this.context.router.location.query,
             ...this.props.screen,
             ...this.props.form.getFieldsValue(),
         }
-
-        this.context.router.push({
-            pathname: this.context.router.location.pathname,
-            query: {
-                ...this.context.router.location.query,
-                ...this.props.form.getFieldsValue(),
-            }
-        })
 
         HTTP.fetch('GET', this.props.url, null, (data) => {
             this.setState({
@@ -82,7 +71,7 @@ class PanelTable extends Component {
                 isLoading: false
             })
         }, {
-            page: page ? page : this.state.current,
+            page,
             ...screen
         }, () => {
             this.setState({isLoading: false})
@@ -90,15 +79,7 @@ class PanelTable extends Component {
     }
 
     resetScreen = () => {
-        let query = this.context.router.location.query
-        this.props.screens.map((screen) => {
-            query[screen.key] = screen.value || ''
-        })
-        this.props.form.setFieldsValue(query)
-        this.context.router.push({
-            pathname: this.context.router.location.pathname,
-            query
-        })
+        this.props.form.resetFields()
     }
 
     render() {
@@ -125,8 +106,7 @@ class PanelTable extends Component {
                                     <FormItem {...THEME.formSpan6Layout}
                                               label={screen.label}>
                                         {getFieldDecorator(screen.key, {
-                                            initialValue: this.context.router.location.query[screen.key]
-                                            || screen.value || '',
+                                            initialValue: screen.value || '',
                                             onChange: (value) => {
                                                 if (screen.onChange) {
                                                     screen.onChange(value, this.props.form)
@@ -150,7 +130,10 @@ class PanelTable extends Component {
                 }
                 <Row>
                     <Col span={12}>
-                        <h2>{this.props.name}列表</h2>
+                        {
+                            this.props.name &&
+                            <h2>{this.props.name}列表</h2>
+                        }
                     </Col>
                     <Col span={12} style={{marginBottom: 20}}>
                         {
@@ -165,6 +148,9 @@ class PanelTable extends Component {
                     <Col span={24}>
                         <Table rowKey={(record, index) => index} columns={this.props.columns}
                                dataSource={this.state.data} pagination={pagination}/>
+                    </Col>
+                    <Col>
+                        {this.props.children}
                     </Col>
                 </Row>
             </Spin>

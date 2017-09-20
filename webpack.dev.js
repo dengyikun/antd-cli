@@ -12,6 +12,7 @@ const DefinePlugin = webpack.DefinePlugin//环境变量设置
 module.exports = {
     output: {
         path: BUILD_PATH,
+        publicPath: '/',
         filename: '[name].[hash:8].js'
     },
     plugins: [

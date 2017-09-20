@@ -2,13 +2,19 @@
  * Created by Loki on 2017/1/20.
  */
 import React, {Component, PropTypes} from 'react'
-import {Form, Icon, Input, Button, Checkbox, Row, Col} from 'antd';
-import {ROUTES} from '../config'
-import styles from '../assets/styles/components/Login.scss'
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
+import {Form, Icon, Input, Button, Checkbox, Row, Col} from 'antd'
+import userAction from '../actions/userAction'
+import Style from '../assets/styles/components/Login.scss'
 
-const FormItem = Form.Item;
+const FormItem = Form.Item
 
-class LoginFrom extends Component {
+const mapDispatchToProps = (dispatch) => ({
+    userAction: bindActionCreators(userAction, dispatch),
+})
+
+class Login extends Component {
     static propTypes = {}//props 类型检查
 
     static defaultProps = {}//默认 props
@@ -24,7 +30,9 @@ class LoginFrom extends Component {
         }
     }//初始化 state
 
-    componentWillMount() {}//插入 DOM 前
+    componentWillMount() {
+        this.getCaptcha()
+    }//插入 DOM 前
 
     componentDidMount() {
     }//插入 DOM 后
@@ -49,20 +57,26 @@ class LoginFrom extends Component {
         e.preventDefault()
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.context.router.push(ROUTES.home.url)
+                this.props.userAction.setUser({
+                    isLogin: true
+                })
             }
         })
+    }
+
+    getCaptcha = () => {
+
     }
 
     render() {
         const {getFieldDecorator} = this.props.form;
         return (
-            <div className={styles.box}>
-                <div className={styles.logo}>
+            <div className={Style.box}>
+                <div className={Style.logo}>
                     管理后台
                 </div>
-                <div className={styles.content}>
-                    <Form onSubmit={this.login} className={styles.form}>
+                <div className={Style.content}>
+                    <Form onSubmit={this.login} className={Style.form}>
                         <FormItem>
                             {getFieldDecorator('username', {
                                 rules: [
@@ -79,7 +93,7 @@ class LoginFrom extends Component {
                                 <Input addonBefore={<Icon type="lock"/>} type="password" placeholder="密码"/>
                             )}
                         </FormItem>
-                        <FormItem className={styles.key}>
+                        <FormItem className={Style.key}>
                             {getFieldDecorator('key')(
                                 <Input/>
                             )}
@@ -97,13 +111,13 @@ class LoginFrom extends Component {
                             {
                                 this.state.captchaUrl &&
                                 <Col span={9}>
-                                    <img className={styles.captcha} src={this.state.captchaUrl}
-                                    onClick={this.getCaptcha}/>
+                                    <img className={Style.captcha} src={this.state.captchaUrl}
+                                         onClick={this.getCaptcha}/>
                                 </Col>
                             }
                         </Row>
                         <FormItem>
-                            <Button type="primary" htmlType="submit" className={styles.submit}>
+                            <Button type="primary" htmlType="submit" className={Style.submit}>
                                 登录
                             </Button>
                             {window.localStorage &&
@@ -121,6 +135,7 @@ class LoginFrom extends Component {
     }//渲染
 }
 
-const Login = Form.create()(LoginFrom)
-
-export default Login
+export default connect(
+    null,
+    mapDispatchToProps
+)(Form.create()(Login))

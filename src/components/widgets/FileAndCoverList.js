@@ -4,7 +4,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Spin, Button, Row, Col, Card} from 'antd'
 import File from './File'
-import ImageURL from './ImageURL'
+import ImageURL from './ImageGallery'
 
 class FileAndCoverList extends Component {
     static propTypes = {

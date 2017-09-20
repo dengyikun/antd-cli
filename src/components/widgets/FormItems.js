@@ -46,7 +46,7 @@ class FormItems extends Component {
 
     getFormItem = (formItem) => {
         const {getFieldDecorator} = this.props.form
-        let span = formItem.span !== undefined ? {span: formItem.span} : THEME.formSpan12
+        let span = formItem.span !== undefined ? formItem.span : THEME.formSpan12
         let formSpan = formItem.formSpan || (
                 formItem.span === 24 ? THEME.formSpan24Layout : THEME.formSpan12Layout
             )
