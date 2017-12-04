@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Modal, Spin, Form, Row, Col, Button, message} from 'antd'
-import {HTTP, THEME} from '../../config'
+import {HTTP, THEME} from '../../utils'
 import FormItems from './FormItems'
 
 
@@ -65,41 +65,51 @@ class ModelForm extends Component {
         this.setState({data: {}})
     }
 
-    onOk = () => {
+    onOk = (e) => {
+        e.preventDefault()
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 let formData = this.props.form.getFieldsValue()
-                this.setState({isLoading: true})
-                if (this.props.isAdd) {
-                    HTTP.post(this.props.url, formData, (data) => {
-                        message.success(`${this.props.name}添加成功！`)
-                        this.props.onCancel()
-                    }, () => {
-                        this.setState({isLoading: false})
-                    })
+                if (this.props.onOk) {
+                    this.props.onOk(formData, this.saveData)
                 } else {
-                    HTTP.patch(this.props.url, formData, (data) => {
-                        message.success(`${this.props.name}修改成功！`)
-                        this.props.onCancel()
-                    }, () => {
-                        this.setState({isLoading: false})
-                    })
+                    this.saveData(formData)
                 }
             }
         })
+    }
+
+    saveData = (formData) => {
+        this.setState({isLoading: true})
+        if (this.props.isAdd) {
+            HTTP.post(this.props.url, formData, (data) => {
+                message.success(`${this.props.name}添加成功！`)
+                this.props.onCancel()
+            }, () => {
+                this.setState({isLoading: false})
+            })
+        } else {
+            HTTP.patch(this.props.url, formData, (data) => {
+                message.success(`${this.props.name}修改成功！`)
+                this.props.onCancel()
+            }, () => {
+                this.setState({isLoading: false})
+            })
+        }
     }
 
     render() {
         return (
             <Modal
                 visible={this.props.visible}
-                title={this.props.isAdd ? `添加${this.props.name}` : `编辑${this.props.name}`}
+                title={this.props.title || ( this.props.isAdd ?
+                    `添加${this.props.name}` : `编辑${this.props.name}` )}
                 onCancel={this.props.onCancel}
                 onOk={this.onOk}
                 width={this.props.width || 500}
                 afterClose={this.onClose}>
                 <Spin spinning={this.state.isLoading}>
-                    <Form>
+                    <Form onSubmit={this.onOk}>
                         <FormItems form={this.props.form}
                                    formItems={this.props.formItems}
                                    data={this.state.data}/>

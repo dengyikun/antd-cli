@@ -51,10 +51,38 @@ export default {
         let parts = value.split(" " + name + "=")
         if (parts.length == 2) return parts.pop().split("").shift()
     },
-    download: (url) => {
+    download: (url, fileName) => {
         let a = document.createElement("a")
         a.href = url
-        a.download = url.substring(url.lastIndexOf('/') + 1)
+        a.download = fileName || url.substring(url.lastIndexOf('/') + 1)
         a.click()
     },
+    getParams: (key) => {
+        let match,
+            pl = /\+/g,  // Regex for replacing addition symbol with a space
+            search = /([^&=]+)=?([^&]*)/g,
+            decode = function (s) {
+                return decodeURIComponent(s.replace(pl, " "));
+            },
+            query = window.location.search.substring(1),
+            params = {}
+        while (match = search.exec(query))
+            params[decode(match[1])] = decode(match[2])
+        return key ? params[key] : params
+    },
+    imagesLoader: (images, callback) => {
+        let total = images.length
+        let completed = 0
+        images.map(src => {
+            let image = new Image()
+            image.src = src
+            image.onload = () => {
+                callback((++completed / total * 100).toFixed(0))
+            }
+            image.onerror = () => {
+                console.log('TOOL Error imagesLoader:' + src)
+                callback((++completed / total * 100).toFixed(0))
+            }
+        })
+    }
 }

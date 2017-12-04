@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Spin, Row, Col, Button, Form, Table} from 'antd'
-import {HTTP, THEME} from '../../config'
+import {HTTP, THEME} from '../../utils'
 
 const FormItem = Form.Item
 

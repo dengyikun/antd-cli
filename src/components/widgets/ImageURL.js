@@ -4,7 +4,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Spin, message} from 'antd'
 import Dropzone from 'react-dropzone'
-import {HTTP, ENUM} from '../../config'
+import {HTTP, ENUM} from '../../utils'
 import DEFAULT from '../../assets/images/default.png'
 
 class ImageURL extends Component {

@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Layout, Menu, Icon} from 'antd'
 import Scrollbar from 'react-scrollbar'
-import {ROUTES} from '../config'
+import {ROUTES} from '../utils'
 import uiAction from '../actions/uiAction'
 import Style from '../assets/styles/components/Menu.scss'
 

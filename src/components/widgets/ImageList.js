@@ -4,7 +4,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Spin, Button, Row, Col, Card, message} from 'antd'
 import Dropzone from 'react-dropzone'
-import {HTTP} from '../../config'
+import {HTTP} from '../../utils'
 
 class ImageList extends Component {
     static propTypes = {

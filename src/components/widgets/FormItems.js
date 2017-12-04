@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Form, Row, Col, Input} from 'antd'
-import {THEME, TOOL} from '../../config'
+import {THEME, TOOL} from '../../utils'
 
 const Item = Form.Item
 

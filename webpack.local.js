@@ -7,10 +7,6 @@ const DefinePlugin = webpack.DefinePlugin//环境变量设置
 const ExtractTextPlugin = require('extract-text-webpack-plugin')//独立样式文件
 
 module.exports = {
-    output: {
-        publicPath: '/',
-        filename: '[name].[hash:8].js'
-    },
     plugins: [
         new DefinePlugin({
             WEBPACK_HOST: '"http://gzqichang.com"',

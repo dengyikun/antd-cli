@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Cascader} from 'antd'
-import {ENUM} from '../../config'
+import {ENUM} from '../../utils'
 
 class LocationCascader extends Component {
     static propTypes = {

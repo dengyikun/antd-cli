@@ -5,7 +5,7 @@ import {Icon, Popover, Button} from 'antd'
 import uiAction from '../actions/uiAction'
 import userAction from '../actions/userAction'
 import userAvatar from '../assets/images/user-avatar.png'
-import {HTTP} from '../config'
+import {HTTP} from '../utils'
 import Style from '../assets/styles/components/Header.scss'
 
 const mapStateToProps = (state) => ({

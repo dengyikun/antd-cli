@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Select} from 'antd'
-import {HTTP, ENUM, PERMITS} from '../../config'
+import {HTTP, ENUM, PERMITS} from '../../utils'
 
 const Option = Select.Option
 

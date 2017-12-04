@@ -4,7 +4,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Modal, Spin, Form, message, Table} from 'antd'
 import File from './ModelUploadFile'
-import {HTTP, THEME} from '../../config'
+import {HTTP, THEME} from '../../utils'
 import FormItems from './FormItems'
 
 

@@ -4,7 +4,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Spin} from 'antd'
 import Gallery from './Gallery'
-import {HTTP} from '../../config'
+import {HTTP} from '../../utils'
 import DEFAULT from '../../assets/images/default.png'
 
 class ImageURL extends Component {

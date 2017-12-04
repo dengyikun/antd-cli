@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Spin, Form, Row, Col, Button, Modal, message} from 'antd'
-import {HTTP} from '../../config'
+import {HTTP} from '../../utils'
 import FormItems from './FormItems'
 
 
@@ -65,7 +65,8 @@ class PanelForm extends Component {
         }
     }
 
-    onSubmit = () => {
+    onSubmit = (e) => {
+        e.preventDefault()
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 let formData = this.props.form.getFieldsValue()
@@ -100,7 +101,7 @@ class PanelForm extends Component {
     render() {
         return (
             <Spin spinning={this.props.isLoading || this.state.isLoading}>
-                <Form>
+                <Form onSubmit={this.onSubmit}>
                     <span>请认真填写</span>
                     <hr/>
                     <h3>基本信息</h3>

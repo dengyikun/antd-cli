@@ -4,7 +4,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Spin, Card, Button} from 'antd'
 import Dropzone from 'react-dropzone'
-import {HTTP} from '../../config'
+import {HTTP} from '../../utils'
 import UPLOAD from '../../assets/images/upload.png'
 import FILE from '../../assets/images/file.png'
 

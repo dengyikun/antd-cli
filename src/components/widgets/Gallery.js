@@ -5,7 +5,7 @@ import React, {Component, PropTypes} from 'react'
 import {Icon, Modal, Spin, Input, Button, Row, Col, message} from 'antd'
 import Dropzone from 'react-dropzone'
 import ReactScrollbar from 'react-custom-scrollbars'
-import {HTTP} from '../../config'
+import {HTTP} from '../../utils'
 
 const Search = Input.Search
 

@@ -3,7 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react'
 import {Modal, message} from 'antd'
-import {HTTP} from './../../config'
+import {HTTP} from './../../utils'
 
 class TableStatusChange extends Component {
     static propTypes = {
