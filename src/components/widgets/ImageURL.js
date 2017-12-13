@@ -9,7 +9,6 @@ import DEFAULT from '../../assets/images/default.png'
 
 class ImageURL extends Component {
     static propTypes = {
-        scene: PropTypes.string.isRequired,
         disableClick: PropTypes.bool
     }//props 类型检查
 
@@ -30,7 +29,6 @@ class ImageURL extends Component {
             let formData = new FormData()
             formData.append('image', files[0])
             formData.append('name', files[0].name)
-            formData.append('scene', this.props.scene)
             HTTP.fetch('POST', 'image', formData, (image) => {
                 this.setState({isLoading: false})
                 this.props.onChange(image.relative_url, image)

@@ -6,7 +6,7 @@
 # 项目初始化安装
 npm install
 
-# 不同服务器的后端地址请在 webpack.*.js 中修改 WEBPACK_HOST ,注意结尾没有斜杠
+# 不同服务器的后端地址请在 webpack.*.js 中修改 WEBPACK_HOST
 # dev 测试服务器
 # local 开发服务器
 # pro 产品服务器

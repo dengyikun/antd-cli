@@ -10,7 +10,6 @@ import FILE from '../../assets/images/file.png'
 
 class File extends Component {
     static propTypes = {
-        scene: PropTypes.string.isRequired,
     }//props 类型检查
 
     static defaultProps = {}//默认 props
@@ -47,7 +46,6 @@ class File extends Component {
         let formData = new FormData()
         formData.append('file', files[0])
         formData.append('name', files[0].name)
-        formData.append('scene', this.props.scene)
         HTTP.fetch('POST', 'upload_file', formData, (file) => {
             this.setState({isLoading: false, url: file.relative_url})
             this.props.onChange(file.relative_url)

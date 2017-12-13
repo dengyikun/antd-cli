@@ -79,7 +79,7 @@ class ModelUpload extends Component {
         this.props.formItems.map((item) => {
             formItems.push({
                 ...item,
-                object: <File scene={'counsel'} accept={item.accept}/>,
+                object: <File accept={item.accept}/>,
                 value: (data) => '',
                 onChange: (file) => {
                     let newData = {...this.state.data}

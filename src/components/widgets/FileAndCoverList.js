@@ -75,12 +75,12 @@ class FileAndCoverList extends Component {
                                 <Card bodyStyle={{padding: 0}} style={{marginBottom: '16px'}}>
                                     <Row gutter={20} style={{padding: 20}}>
                                         <Col span={12}>
-                                            <File scene={'case'} value={item.pdf_url}
+                                            <File value={item.pdf_url}
                                                   style={{width: '100%', height: '250px'}}
                                                   onChange={(value) => this.fileChange(value, index)}/>
                                         </Col>
                                         <Col span={12}>
-                                            <ImageURL scene={'common'} value={item.image_url}
+                                            <ImageURL value={item.image_url}
                                                       style={{width: '100%', height: '250px'}}
                                                       onChange={(value, image) => this.imageChange(image, index)}/>
                                         </Col>

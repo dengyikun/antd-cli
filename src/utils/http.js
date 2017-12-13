@@ -52,17 +52,14 @@ const fetchEnca = (type, url, data, callback, urlParam, errorCallback, isOpen) =
                 }
                 if (response.status === 500) {
                     message.error('服务器异常！', 10)
-                    if (errorCallback) {
-                        errorCallback(data)
-                    }
                 }
                 response.json().then(data => {
                     const error = JSON.stringify(data).substr(0, 80) + '……'
                     message.error(error, 10)
-                    if (errorCallback) {
-                        errorCallback(data)
-                    }
                 })
+                if (errorCallback) {
+                    errorCallback(data)
+                }
                 throw new Error(response.status)
             } else if (response.status === 204) {
                 return '删除成功'
@@ -73,6 +70,9 @@ const fetchEnca = (type, url, data, callback, urlParam, errorCallback, isOpen) =
             if (callback) {
                 callback(data)
             }
+        })
+        .catch(error => {
+            console.log(error);
         })
 }
 

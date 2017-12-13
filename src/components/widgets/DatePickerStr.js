@@ -15,12 +15,6 @@ class DatePickerStr extends Component {
         this.state = {}
     }//初始化 state
 
-    componentWillMount() {
-    }//插入 DOM 前
-
-    componentWillReceiveProps(nextProps) {
-    }//接收新 props
-
     render() {
         return (
             <DatePicker {...this.props}

@@ -9,7 +9,6 @@ import FILE from '../../assets/images/file.png'
 
 class ModelUploadFile extends Component {
     static propTypes = {
-        scene: PropTypes.string.isRequired,
         accept: PropTypes.string,
     }//props 类型检查
 

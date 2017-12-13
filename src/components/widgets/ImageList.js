@@ -8,7 +8,6 @@ import {HTTP} from '../../utils'
 
 class ImageList extends Component {
     static propTypes = {
-        scene: PropTypes.string.isRequired,
         total: PropTypes.number
     }//props 类型检查
 
@@ -57,7 +56,6 @@ class ImageList extends Component {
             let formData = new FormData()
             formData.append('image', files[0])
             formData.append('name', files[0].name.split('.')[0])
-            formData.append('scene', this.props.scene)
             HTTP.fetch('POST', 'image', formData, (data) => {
                 let newValue = {...this.props.value}
                 newValue.images = this.props.value && this.props.value.images ?

@@ -9,7 +9,6 @@ import DEFAULT from '../../assets/images/default.png'
 
 class Image extends Component {
     static propTypes = {
-        scene: PropTypes.string.isRequired,
         disableClick: PropTypes.bool
     }//props 类型检查
 
@@ -38,6 +37,8 @@ class Image extends Component {
             this.setState({isLoading: true})
             HTTP.get(value, (image) => {
                 this.setState({isLoading: false, imageSrc: image.image})
+            }, () => {
+                this.setState({isLoading: false})
             })
         }
     }
@@ -50,10 +51,11 @@ class Image extends Component {
             let formData = new FormData()
             formData.append('image', files[0])
             formData.append('name', files[0].name)
-            formData.append('scene', this.props.scene)
             HTTP.fetch('POST', 'image', formData, (image) => {
                 this.setState({isLoading: false, imageSrc: image.image})
                 this.props.onChange(image.url)
+            }, () => {
+                this.setState({isLoading: false})
             })
         }
     }
