@@ -52,7 +52,7 @@ class AppMenu extends React.Component {
 
     openMenu = () => {
         if (this.props.collapsed) {
-            this.props.uiAction.openMenu()
+            this.props.uiAction.collapsed()
         }
     }
 
@@ -63,13 +63,13 @@ class AppMenu extends React.Component {
         this.state.menus.map((menu) => {
             if (menu.children) {
                 menu.children.map((child) => {
-                    if (pathname === child.url) {
+                    if (pathname.includes(child.url)) {
                         selected = child.url
                         opened = menu.url
                     }
                 })
             } else {
-                if (pathname === menu.url) {
+                if (pathname.includes(menu.url)) {
                     selected = menu.url
                 }
             }

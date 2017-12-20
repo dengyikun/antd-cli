@@ -6,7 +6,7 @@ import {message} from 'antd';
 
 const apiHost = window.localStorage.getItem('host') || WEBPACK_HOST
 
-const fetchEnca = (type, url, data, callback, urlParam, errorCallback, isOpen) => {
+const fetchEnca = (type, url, data, urlParam, isOpen) => {
     let fetchOpt = {
         method: type,
         headers: {
@@ -34,8 +34,10 @@ const fetchEnca = (type, url, data, callback, urlParam, errorCallback, isOpen) =
     if (urlParam) {
         fetchUrl += '?'
         for (let key in urlParam) {
-            if (urlParam[key]) {
-                fetchUrl += '&' + key + '=' + encodeURIComponent(urlParam[key])
+            let value = urlParam[key]
+            if (value) {
+                value = typeof value === 'string' ? value : JSON.stringify(value)
+                fetchUrl += '&' + key + '=' + encodeURIComponent(value)
             }
         }
     }
@@ -44,7 +46,7 @@ const fetchEnca = (type, url, data, callback, urlParam, errorCallback, isOpen) =
         fetchOpt.headers['Authorization'] = 'token ' + getToken()
     }
 
-    fetch(fetchUrl, fetchOpt)
+    return fetch(fetchUrl, fetchOpt)
         .then(response => {
             if (response.status >= 400) {
                 if (response.status === 401) {
@@ -57,53 +59,42 @@ const fetchEnca = (type, url, data, callback, urlParam, errorCallback, isOpen) =
                     const error = JSON.stringify(data).substr(0, 80) + '……'
                     message.error(error, 10)
                 })
-                if (errorCallback) {
-                    errorCallback(data)
-                }
                 throw new Error(response.status)
             } else if (response.status === 204) {
-                return '删除成功'
+                return Promise.resolve('删除成功')
             }
             return response.json()
-        })
-        .then(data => {
-            if (callback) {
-                callback(data)
-            }
-        })
-        .catch(error => {
-            console.log(error);
         })
 }
 
 const getUrl = (key) => window.sitemap[key]
 
-const login = (data, callback) => {
-    fetchEnca('POST', 'token_login', data, (callbackData) => {
-        if (callbackData.token && window.localStorage) {
-            const storage = window.localStorage
-            storage.setItem('cacheTime', new Date())
-            storage.setItem('token', callbackData.token)
-            storage.setItem('phone', data.phone)
-        }
-        if (callback) {
-            callback(callbackData)
-        }
-    }, null, null, true)
+const login = (data) => {
+    return new Promise(resolve => {
+        fetchEnca('POST', 'token_login', data, null, true)
+            .then(tokenData => {
+                if (tokenData.token && window.localStorage) {
+                    const storage = window.localStorage
+                    storage.setItem('cacheTime', new Date())
+                    storage.setItem('token', tokenData.token)
+                    storage.setItem('phone', data.phone)
+                }
+                resolve(tokenData)
+            })
+    })
 }
 
-const loginOut = (callback) => {
+const loginOut = () => {
     const storage = window.localStorage
     storage.removeItem("cacheTime")
     storage.removeItem("token")
     storage.removeItem("remember")
     window.location.href = '/'
-    if (callback) {
-        callback()
-    }
 }
 
-const checkLogin = () => (new Date() - new Date(window.localStorage.getItem('cacheTime'))) / (1000 * 60 * 60 * 24) <= 7
+const checkLogin = () => (window.localStorage.getItem('remember') === 'true' &&
+(new Date() - new Date(window.localStorage.getItem('cacheTime'))) / (1000 * 60 * 60 * 24) <= 7) ||
+(new Date() - new Date(window.localStorage.getItem('cacheTime'))) / (1000 * 60 * 60) <= 2
 
 const getToken = () => {
     if (checkLogin()) {
@@ -116,28 +107,19 @@ const getToken = () => {
 export default {
     apiHost,
     fetch: fetchEnca,
-    get: (url, callback, errorCallback) => {
-        fetchEnca('GET', url, null, callback, null, errorCallback)
-    },
-    post: (url, data, callback, errorCallback) => {
-        fetchEnca('POST', url, data, callback, null, errorCallback)
-    },
-    put: (url, data, callback, errorCallback) => {
-        fetchEnca('PUT', url, data, callback, null, errorCallback)
-    },
-    delete: (url, callback, errorCallback) => {
-        fetchEnca('DELETE', url, null, callback, null, errorCallback)
-    },
-    patch: (url, data, callback, errorCallback) => {
-        fetchEnca('PATCH', url, data, callback, null, errorCallback)
-    },
-    getSitemap: (callback) => {
-        fetchEnca('GET', `${apiHost}/api/sitemap/`, null, (data) => {
-            window.sitemap = data
-            if (callback) {
-                callback()
-            }
-        }, null, null, true)
+    get: (url) => fetchEnca('GET', url),
+    post: (url, data) => fetchEnca('POST', url, data),
+    put: (url, data) => fetchEnca('PUT', url, data),
+    delete: (url) => fetchEnca('DELETE', url),
+    patch: (url, data) => fetchEnca('PATCH', url, data),
+    getSitemap: () => {
+        return new Promise(resolve => {
+            fetchEnca('GET', `${apiHost}api/sitemap/`, null, null, true)
+                .then(data => {
+                    window.sitemap = data
+                    resolve(data)
+                })
+        })
     },
     getUrl,
     login,

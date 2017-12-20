@@ -63,7 +63,7 @@ const commonConfig = {
             },
             {
                 test: /\.(png|jpg|svg)/,
-                use: 'url-loader?limit=20000'
+                use: 'url-loader?limit=20000&name=images/[hash:8].[name].[ext]'
             },
             {
                 test: /\.json$/,
