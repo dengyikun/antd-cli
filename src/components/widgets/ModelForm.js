@@ -4,8 +4,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Modal, Spin, Form, Row, Col, Button, message} from 'antd'
 import {HTTP, THEME} from '../../utils'
-import FormItems from './FormItems'
-
+import CustomFormItems from './CustomFormItems'
 
 class ModelForm extends Component {
     static propTypes = {
@@ -110,7 +109,7 @@ class ModelForm extends Component {
                 afterClose={this.onClose}>
                 <Spin spinning={this.state.isLoading}>
                     <Form onSubmit={this.onOk}>
-                        <FormItems form={this.props.form}
+                        <CustomFormItems form={this.props.form}
                                    formItems={this.props.formItems}
                                    data={this.state.data}/>
                     </Form>

@@ -35,7 +35,7 @@ const fetchEnca = (type, url, data, urlParam, isOpen) => {
         fetchUrl += '?'
         for (let key in urlParam) {
             let value = urlParam[key]
-            if (value) {
+            if (value || value === false) {
                 value = typeof value === 'string' ? value : JSON.stringify(value)
                 fetchUrl += '&' + key + '=' + encodeURIComponent(value)
             }
@@ -77,7 +77,7 @@ const login = (data) => {
                     const storage = window.localStorage
                     storage.setItem('cacheTime', new Date())
                     storage.setItem('token', tokenData.token)
-                    storage.setItem('phone', data.phone)
+                    storage.setItem('remember', data.remember)
                 }
                 resolve(tokenData)
             })
@@ -107,11 +107,11 @@ const getToken = () => {
 export default {
     apiHost,
     fetch: fetchEnca,
-    get: (url) => fetchEnca('GET', url),
-    post: (url, data) => fetchEnca('POST', url, data),
-    put: (url, data) => fetchEnca('PUT', url, data),
-    delete: (url) => fetchEnca('DELETE', url),
-    patch: (url, data) => fetchEnca('PATCH', url, data),
+    get: (url, urlParam, isOpen) => fetchEnca('GET', url, null, urlParam, isOpen),
+    post: (url, data, urlParam, isOpen) => fetchEnca('POST', url, data, urlParam, isOpen),
+    put: (url, data, urlParam, isOpen) => fetchEnca('PUT', url, data, urlParam, isOpen),
+    delete: (url, urlParam, isOpen) => fetchEnca('DELETE', url, null, urlParam, isOpen),
+    patch: (url, data, urlParam, isOpen) => fetchEnca('PATCH', url, data, urlParam, isOpen),
     getSitemap: () => {
         return new Promise(resolve => {
             fetchEnca('GET', `${apiHost}api/sitemap/`, null, null, true)

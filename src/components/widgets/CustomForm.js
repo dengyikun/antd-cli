@@ -4,10 +4,10 @@
 import React, {Component, PropTypes} from 'react'
 import {Spin, Form, Row, Col, Button, Modal, message} from 'antd'
 import {HTTP} from '../../utils'
-import FormItems from './FormItems'
+import CustomFormItems from './CustomFormItems'
 
 
-class PanelForm extends Component {
+class CustomForm extends Component {
     static propTypes = {
         name: PropTypes.string.isRequired,
         formItems: PropTypes.array.isRequired,
@@ -105,7 +105,7 @@ class PanelForm extends Component {
                     <span>请认真填写</span>
                     <hr/>
                     <h3>基本信息</h3>
-                    <FormItems form={this.props.form}
+                    <CustomFormItems form={this.props.form}
                                formItems={this.props.formItems}
                                data={this.state.data}/>
                     <Row>
@@ -136,4 +136,4 @@ class PanelForm extends Component {
     }//渲染
 }
 
-export default Form.create()(PanelForm)
+export default Form.create()(CustomForm)

@@ -7,7 +7,7 @@ import {HTTP, THEME} from '../../utils'
 
 const FormItem = Form.Item
 
-class PanelTable extends Component {
+class CustomTable extends Component {
     static propTypes = {
         columns: PropTypes.array.isRequired,
         url: PropTypes.string.isRequired,
@@ -158,4 +158,4 @@ class PanelTable extends Component {
     }//渲染
 }
 
-export default Form.create()(PanelTable)
+export default Form.create()(CustomTable)

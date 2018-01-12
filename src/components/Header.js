@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
     userAction: bindActionCreators(userAction, dispatch)
 })
 
-class HeaderUI extends React.Component {
+class Header extends React.Component {
     static propTypes = {
         menuCollapsed: PropTypes.bool.isRequired,
         user: PropTypes.object.isRequired,
@@ -93,9 +93,7 @@ class HeaderUI extends React.Component {
     }
 }
 
-const AppHeader = connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(HeaderUI)
-
-export default AppHeader
+)(Header)

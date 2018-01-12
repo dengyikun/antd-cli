@@ -11,7 +11,7 @@ const mapDispatchToProps = (dispatch) => ({
     userAction: bindActionCreators(userAction, dispatch)
 })
 
-class HomeUI extends React.Component{
+class Home extends React.Component{
     static propTypes = {
         user: PropTypes.object.isRequired,
         userAction: PropTypes.object.isRequired
@@ -26,9 +26,7 @@ class HomeUI extends React.Component{
     }
 }
 
-const Home = connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(HomeUI)
-
-export default Home
+)(Home)

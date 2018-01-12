@@ -84,9 +84,6 @@ const commonConfig = {
             allChunks: true
         }),
     ],
-    devServer: {
-        historyApiFallback: true
-    },
 }
 
 module.exports = process.env.NODE_ENV === 'local' ?

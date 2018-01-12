@@ -21,4 +21,7 @@ module.exports = {
             disable: true
         }),
     ],
+    devServer: {
+        historyApiFallback: true
+    },
 }
