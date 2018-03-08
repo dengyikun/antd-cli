@@ -2,7 +2,7 @@
  * Created by DengYiKun on 2017/2/10.
  */
 export { default as CustomForm } from './CustomForm'
-export { default as CustomFormItems } from './CustomFormItems'
+export { default as CustomFormItem } from './CustomFormItem'
 export { default as CustomTable } from './CustomTable'
 export { default as DatePickerStr } from './DatePickerStr'
 export { default as DateTimePickerStr } from './DateTimePickerStr'

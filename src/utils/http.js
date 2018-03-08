@@ -32,7 +32,7 @@ const fetchEnca = (type, url, data, urlParam, isOpen) => {
     let fetchUrl = /^https?:\/\//.test(url) ? url : window.sitemap[url]
 
     if (urlParam) {
-        fetchUrl += '?'
+        fetchUrl += fetchUrl.includes('?') ? '' : '?'
         for (let key in urlParam) {
             let value = urlParam[key]
             if (value || value === false) {

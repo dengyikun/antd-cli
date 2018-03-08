@@ -7,8 +7,6 @@ import Gallery from './Gallery'
 import 'react-quill/dist/quill.snow.css'
 import '../../assets/styles/components/widgets/RichText.scss'
 
-let _this
-
 class RichText extends Component {
     static propTypes = {}//props 类型检查
 
@@ -22,18 +20,19 @@ class RichText extends Component {
             isGalleryVisible: false,
             quill: {}
         }
+
     }//初始化 state
 
     componentWillMount() {
-        _this = this
     }//插入 DOM 前
 
     componentWillReceiveProps(nextProps) {
     }//接收新 props
 
-    insertStar = function () {
-        console.log(1)
-        _this.setState({isGalleryVisible: true, quill: this.quill})
+    insertStar = function (_this) {
+        return function () {
+          _this.setState({isGalleryVisible: true, quill: this.quill})
+        }
     }
 
     onGalleryOk = (image) => {
@@ -70,10 +69,12 @@ class RichText extends Component {
                                 toolbar: {
                                     container: "#ql-toolbar",
                                     handlers: {
-                                        "image": this.insertStar,
+                                        "image": this.insertStar(this),
                                     }
                                 }
                             }}
+                            value={this.props.value || ''}
+                            onChange={this.props.onChange}
                 />
             </div>
         )

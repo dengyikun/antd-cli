@@ -4,7 +4,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Spin, Form, Row, Col, Button, Modal, message} from 'antd'
 import {HTTP} from '../../utils'
-import CustomFormItems from './CustomFormItems'
+import CustomFormItem from './CustomFormItem'
 
 
 class CustomForm extends Component {
@@ -105,10 +105,11 @@ class CustomForm extends Component {
                     <span>请认真填写</span>
                     <hr/>
                     <h3>基本信息</h3>
-                    <CustomFormItems form={this.props.form}
-                               formItems={this.props.formItems}
-                               data={this.state.data}/>
-                    <Row>
+                    <Row gutter={20}>
+                        {
+                            this.props.formItems.map(formItem => formItem &&
+                            <CustomFormItem id={formItem.key} form={this.props.form} {...formItem}/>)
+                        }
                         <Col span={24}>
                             <hr/>
                         </Col>
@@ -130,6 +131,9 @@ class CustomForm extends Component {
                             }
                         </Col>
                     </Row>
+                    {
+
+                    }
                 </Form>
             </Spin>
         )

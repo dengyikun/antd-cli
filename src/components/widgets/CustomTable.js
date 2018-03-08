@@ -2,33 +2,27 @@
  * Created by DengYiKun on 2017/3/8.
  */
 import React, {Component, PropTypes} from 'react'
-import {Spin, Row, Col, Button, Form, Table} from 'antd'
+import {Spin, Row, Col, Button, Form, Table, Icon} from 'antd'
+import CustomFormItem from './CustomFormItem'
 import {HTTP, THEME} from '../../utils'
-
-const FormItem = Form.Item
 
 class CustomTable extends Component {
     static propTypes = {
-        columns: PropTypes.array.isRequired,
-        url: PropTypes.string.isRequired,
-        name: PropTypes.string,
-        add: PropTypes.func,
-        screens: PropTypes.array,
-        screen: PropTypes.object,
-        refresh: PropTypes.object,
-        actions: PropTypes.object,
+        columns: PropTypes.array.isRequired, //Table columns
+        url: PropTypes.string.isRequired, //请求数据的 url
+        name: PropTypes.string, //显示在表格左上角的名称
+        add: PropTypes.func, //添加方法
+        hasOpen: PropTypes.bool, //展示在表格顶部的过滤属性是否需要支持展开
+        screens: PropTypes.array, //展示在表格顶部的过滤属性
+        screen: PropTypes.object, //不展示在表格顶部的过滤属性
+        refresh: PropTypes.object, //刷新方法
+        actions: PropTypes.object, //额外的操作业务，放置在添加按钮旁边
+        pageSize: PropTypes.number,//分页大小
+        isPOST: PropTypes.bool,//是否是 POST 的请求方式获取数据
     }//props 类型检查
 
     static defaultProps = {
-        screen: {},
-        // screens: [
-        //     {
-        //         key: '',
-        //         value: '',
-        //         object: '',
-        //         hidden: false
-        //     }
-        // ]
+        pageSize: 10,
     }//默认 props
 
     static contextTypes = {}//context 显式注册
@@ -39,8 +33,8 @@ class CustomTable extends Component {
             data: [],
             current: 1,//当前页
             total: 0,//总条目数
-            pageSize: 10,//分页大小
             isLoading: false,
+            isOpen: false,
         }
     }//初始化 state
 
@@ -56,26 +50,42 @@ class CustomTable extends Component {
     }//接收新 props
 
     changePage = (page) => {
-        page = page || this.state.current
         this.setState({isLoading: true})
-        const screen = {
+        page = page || this.state.current
+        const data = {
+            page,
+            page_size: this.props.pageSize,
             ...this.props.screen,
             ...this.props.form.getFieldsValue(),
         }
 
-        HTTP.fetch('GET', this.props.url, null, (data) => {
-            this.setState({
-                total: data.count,
-                current: page,
-                data: data.results,
-                isLoading: false
-            })
-        }, {
-            page,
-            ...screen
-        }, () => {
-            this.setState({isLoading: false})
-        })
+        if (this.props.isPOST) {
+            HTTP.post(this.props.url, data)
+                .then((data) => {
+                    this.setState({
+                        total: data.count,
+                        current: page,
+                        data: data.results,
+                        isLoading: false
+                    })
+                })
+                .catch(() => {
+                    this.setState({isLoading: false})
+                })
+        } else {
+            HTTP.get(this.props.url, data)
+                .then((data) => {
+                    this.setState({
+                        total: data.count,
+                        current: page,
+                        data: data.results,
+                        isLoading: false
+                    })
+                })
+                .catch(() => {
+                    this.setState({isLoading: false})
+                })
+        }
     }
 
     resetScreen = () => {
@@ -83,45 +93,52 @@ class CustomTable extends Component {
     }
 
     render() {
-        const {getFieldDecorator} = this.props.form
+        const {hasOpen, className, form, name, add, actions, columns, children, pageSize} = this.props
+        const {current, total, isOpen, isLoading, data} = this.state
         const pagination = {
-            current: this.state.current,
-            total: this.state.total,
-            pageSize: this.state.pageSize,
+            current,
+            total,
+            pageSize,
             showQuickJumper: true,
             onChange: (page) => {
                 this.changePage(page)
             }
         }
+        const screens = hasOpen && !isOpen ?
+            this.props.screens.slice(0, 2) : this.props.screens
 
         return (
-            <Spin spinning={this.state.isLoading}>
+            <Spin spinning={isLoading} wrapperClassName={className}>
                 {
-                    this.props.screens &&
-                    <Row>
+                    screens &&
+                    <Row gutter={20}>
                         {
-                            this.props.screens.map((screen) =>
-                                <Col {...(screen.hidden ? {span: 0} : THEME.formSpan6)}
-                                     key={screen.key}>
-                                    <FormItem {...THEME.formSpan6Layout}
-                                              label={screen.label}>
-                                        {getFieldDecorator(screen.key, {
-                                            initialValue: screen.value || '',
-                                            onChange: (value) => {
-                                                if (screen.onChange) {
-                                                    screen.onChange(value, this.props.form)
-                                                }
-                                            }
-                                        })(
-                                            screen.object
-                                        )}
-                                    </FormItem>
-                                </Col>
-                            )
+                            screens.map(formItem => formItem &&
+                            <CustomFormItem id={formItem.key} form={form} {...formItem}/>)
                         }
-                        <Col span={24} style={{marginBottom: 20}}>
-                            <Button type="primary" onClick={() => this.changePage(1)}>查询</Button>
-                            <Button style={{marginLeft: 24}} onClick={this.resetScreen}>重置</Button>
+                        <Col {...(isOpen ? {span: 24} : THEME.span_8)}
+                             style={{
+                                 paddingTop: 3, userSelect: 'none', marginBottom: 24,
+                                 textAlign: hasOpen && isOpen ? 'right' : 'left'
+                             }}>
+                            <Button type="primary" style={{marginRight: 10}}
+                                    onClick={() => this.changePage(1)}>查询</Button>
+                            <Button style={{marginRight: 10}}
+                                    onClick={this.resetScreen}>重置</Button>
+                            {
+                                hasOpen && isOpen &&
+                                <a style={{whiteSpace: 'nowrap'}}
+                                   onClick={_ => this.setState({isOpen: !isOpen})}>
+                                    收起&nbsp;<Icon type="up"/>
+                                </a>
+                            }
+                            {
+                                hasOpen && !isOpen &&
+                                <a style={{whiteSpace: 'nowrap'}}
+                                   onClick={_ => this.setState({isOpen: !isOpen})}>
+                                    展开&nbsp;<Icon type="down"/>
+                                </a>
+                            }
                         </Col>
                         <Col span={24}>
                             <hr/>
@@ -131,28 +148,24 @@ class CustomTable extends Component {
                 <Row>
                     <Col span={12}>
                         {
-                            this.props.name &&
-                            <h2>{this.props.name}列表</h2>
+                            name &&
+                            <h2>{name}列表</h2>
                         }
                     </Col>
                     <Col span={12} style={{marginBottom: 20}}>
                         {
-                            this.props.add &&
-                            <Button onClick={this.props.add} type="primary"
+                            add &&
+                            <Button onClick={add} type="primary"
                                     style={{float: 'right'}}>添加</Button>
                         }
-                        {
-                            this.props.actions
-                        }
+                        {actions}
                     </Col>
                     <Col span={24}>
-                        <Table rowKey={(record, index) => index} columns={this.props.columns}
-                               dataSource={this.state.data} pagination={pagination}/>
-                    </Col>
-                    <Col>
-                        {this.props.children}
+                        <Table rowKey={(record, index) => index} columns={columns}
+                               dataSource={data} pagination={pagination}/>
                     </Col>
                 </Row>
+                {children}
             </Spin>
         )
     }//渲染

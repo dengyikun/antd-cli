@@ -4,6 +4,7 @@
 import React, {Component, PropTypes} from 'react'
 import {DatePicker} from 'antd'
 import moment from 'moment'
+import locale from 'antd/lib/date-picker/locale/zh_CN'
 
 const RangePicker = DatePicker.RangePicker
 
@@ -24,16 +25,14 @@ class RangePickerStr extends Component {
     }//接收新 props
 
     render() {
-        let value = []
-        this.props.value.map((item) => {
-            value.push(moment(item, 'YYYY-MM-DD'))
-        })
         return (
-            <RangePicker {...this.props}
-                        onChange={(date, dateString) => {
-                            this.props.onChange(dateString)
-                        }}
-                        value={value}/>
+            <RangePicker
+                {...this.props}
+                onChange={(date, dateString) => {
+                    this.props.onChange(dateString)
+                }}
+                value={Array.from(this.props.value || [], (item) => moment(item, this.props.format || 'YYYY-MM-DD'))}
+                locale={locale}/>
         )
     }//渲染
 }

@@ -4,7 +4,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Modal, Spin, Form, Row, Col, Button, message} from 'antd'
 import {HTTP, THEME} from '../../utils'
-import CustomFormItems from './CustomFormItems'
+import CustomFormItem from './CustomFormItem'
 
 class ModelForm extends Component {
     static propTypes = {
@@ -109,9 +109,13 @@ class ModelForm extends Component {
                 afterClose={this.onClose}>
                 <Spin spinning={this.state.isLoading}>
                     <Form onSubmit={this.onOk}>
-                        <CustomFormItems form={this.props.form}
-                                   formItems={this.props.formItems}
-                                   data={this.state.data}/>
+                        <Row gutter={20}>
+                            {
+                                this.props.formItems.map(formItem => formItem &&
+                                <CustomFormItem id={formItem.key} form={this.props.form} {...formItem}/>)
+                            }
+                        </Row>
+                        {this.props.children}
                     </Form>
                 </Spin>
             </Modal>

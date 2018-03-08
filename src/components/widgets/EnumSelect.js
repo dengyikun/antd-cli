@@ -8,7 +8,7 @@ const Option = Select.Option
 
 class EnumSelect extends Component {
     static propTypes = {
-        enum: PropTypes.any.isRequired,
+        ENUM: PropTypes.any.isRequired,
         all: PropTypes.string,
         placeholder: PropTypes.string,
         multiple: PropTypes.bool
@@ -22,17 +22,22 @@ class EnumSelect extends Component {
     }//初始化 state
 
     render() {
-        const Enum = this.props.enum
-        let groupOptions = [];
-        if (this.props.all) {
-            groupOptions.push(<Option value="" key="">{this.props.all}</Option>)
-        }
-        for (let key in Enum) {
-            groupOptions.push(<Option value={Enum instanceof Array ? Enum[key] : key} key={key}>{Enum[key]}</Option>)
-        }
+        const {all, ENUM} = this.props
         return (
             <Select {...this.props}>
-                {groupOptions}
+                {
+                    all &&
+                    <Option value="" key="">{all}</Option>
+                }
+                {
+                    Object.keys(ENUM).map(key => {
+                        key = isNaN(key) ? key : parseInt(key)
+                        return <Option value={ENUM instanceof Array ? ENUM[key] : key}
+                                       key={key}>
+                            {ENUM[key]}
+                        </Option>
+                        })
+                }
             </Select>
         )
     }//渲染
