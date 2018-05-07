@@ -8,10 +8,10 @@ const Option = Select.Option
 
 class EnumSelect extends Component {
     static propTypes = {
-        ENUM: PropTypes.any.isRequired,
-        all: PropTypes.string,
-        placeholder: PropTypes.string,
-        multiple: PropTypes.bool
+        // ENUM: PropTypes.any.isRequired,
+        // all: PropTypes.string,
+        // placeholder: PropTypes.string,
+        // multiple: PropTypes.bool
     }//props 类型检查
 
     static defaultProps = {}//默认 props

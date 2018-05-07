@@ -1,10 +1,11 @@
 /**
  * Created by Loki on 2017/1/20.
  */
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {Form, Icon, Input, Button, Checkbox, Row, Col} from 'antd'
+import {LocationCascader} from './widgets'
 import userAction from '../actions/userAction'
 import Style from '../assets/styles/components/Login.scss'
 
@@ -20,7 +21,6 @@ class Login extends Component {
     static defaultProps = {}//默认 props
 
     static contextTypes = {
-        router: React.PropTypes.object
     }
 
     constructor(props) {
@@ -90,7 +90,8 @@ class Login extends Component {
                             {getFieldDecorator('password', {
                                 rules: [{required: true, message: '请输入您的密码！'}],
                             })(
-                                <Input addonBefore={<Icon type="lock"/>} type="password" placeholder="密码"/>
+                                //<Input addonBefore={<Icon type="lock"/>} type="password" placeholder="密码"/>
+                              <LocationCascader/>
                             )}
                         </FormItem>
                         <FormItem className={Style.key}>

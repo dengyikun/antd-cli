@@ -11,10 +11,10 @@ const Search = Input.Search
 
 class Gallery extends Component {
     static propTypes = {
-        visible: PropTypes.bool.isRequired,
-        onOk: PropTypes.func.isRequired,
-        onCancel: PropTypes.func.isRequired,
-        multiple: PropTypes.bool,
+        // visible: PropTypes.bool.isRequired,
+        // onOk: PropTypes.func.isRequired,
+        // onCancel: PropTypes.func.isRequired,
+        // multiple: PropTypes.bool,
     }//props 类型检查
 
     static defaultProps = {}//默认 props

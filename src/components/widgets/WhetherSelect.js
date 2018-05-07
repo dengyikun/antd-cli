@@ -8,7 +8,7 @@ const Option = Select.Option
 
 class WhetherSelect extends Component {
     static propTypes = {
-        placeholder: PropTypes.string
+        // placeholder: PropTypes.string
     }//props 类型检查
 
     static defaultProps = {}//默认 props

@@ -8,7 +8,7 @@ import {HTTP} from '../../utils'
 
 class ImageList extends Component {
     static propTypes = {
-        total: PropTypes.number
+        // total: PropTypes.number
     }//props 类型检查
 
     static defaultProps = {}//默认 props

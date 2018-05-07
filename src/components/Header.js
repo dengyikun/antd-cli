@@ -1,4 +1,4 @@
-import React, {Compontent, PropTypes} from 'react'
+import React, {Compontent} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {Icon, Popover, Button} from 'antd'
@@ -20,14 +20,9 @@ const mapDispatchToProps = (dispatch) => ({
 
 class Header extends React.Component {
     static propTypes = {
-        menuCollapsed: PropTypes.bool.isRequired,
-        user: PropTypes.object.isRequired,
-        uiAction: PropTypes.object.isRequired,
-        userAction: PropTypes.object.isRequired
     }
 
     static contextTypes = {
-        router: React.PropTypes.object
     }
 
     constructor(props) {

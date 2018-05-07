@@ -9,21 +9,21 @@ import CustomFormItem from './CustomFormItem'
 
 class CustomForm extends Component {
     static propTypes = {
-        name: PropTypes.string.isRequired,
-        formItems: PropTypes.array.isRequired,
-        url: PropTypes.string.isRequired,
-        footer: PropTypes.object,
-        hideBack: PropTypes.bool,
-        hideSubmit: PropTypes.bool,
-        onSubmit: PropTypes.func,
-        submitText: PropTypes.string,
-        isLoading: PropTypes.bool,
+        // name: PropTypes.string.isRequired,
+        // formItems: PropTypes.array.isRequired,
+        // url: PropTypes.string.isRequired,
+        // footer: PropTypes.object,
+        // hideBack: PropTypes.bool,
+        // hideSubmit: PropTypes.bool,
+        // onSubmit: PropTypes.func,
+        // submitText: PropTypes.string,
+        // isLoading: PropTypes.bool,
     }//props 类型检查
 
     static defaultProps = {}//默认 props
 
     static contextTypes = {
-        router: PropTypes.object
+        // router: PropTypes.object
     }
 
     constructor(props) {

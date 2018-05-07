@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
@@ -21,7 +21,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 class AppMenu extends React.Component {
     static propTypes = {
-        collapsed: PropTypes.bool.isRequired,
     }
     static contextTypes = {}
 

@@ -8,19 +8,19 @@ import CustomFormItem from './CustomFormItem'
 
 class ModelForm extends Component {
     static propTypes = {
-        name: PropTypes.string.isRequired,
-        formItems: PropTypes.array.isRequired,
-        url: PropTypes.string.isRequired,
-        isAdd: PropTypes.bool.isRequired,
-        visible: PropTypes.bool.isRequired,
-        onCancel: PropTypes.func.isRequired,
-        width: PropTypes.number
+        // name: PropTypes.string.isRequired,
+        // formItems: PropTypes.array.isRequired,
+        // url: PropTypes.string.isRequired,
+        // isAdd: PropTypes.bool.isRequired,
+        // visible: PropTypes.bool.isRequired,
+        // onCancel: PropTypes.func.isRequired,
+        // width: PropTypes.number
     }//props 类型检查
 
     static defaultProps = {}//默认 props
 
     static contextTypes = {
-        router: PropTypes.object
+        // router: PropTypes.object
     }
 
     constructor(props) {

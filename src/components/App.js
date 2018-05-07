@@ -1,7 +1,7 @@
 /**
  * Created by 義堃 on 2017/7/5.
  */
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
 import {BrowserRouter, Route, Redirect} from 'react-router-dom'
 import {createBrowserHistory} from 'history'
 import {bindActionCreators} from 'redux'

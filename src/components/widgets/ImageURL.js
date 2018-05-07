@@ -9,7 +9,7 @@ import DEFAULT from '../../assets/images/default.png'
 
 class ImageURL extends Component {
     static propTypes = {
-        disableClick: PropTypes.bool
+        // disableClick: PropTypes.bool
     }//props 类型检查
 
     static defaultProps = {}//默认 props

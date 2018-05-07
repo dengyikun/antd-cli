@@ -8,17 +8,17 @@ import {HTTP, THEME} from '../../utils'
 
 class CustomTable extends Component {
     static propTypes = {
-        columns: PropTypes.array.isRequired, //Table columns
-        url: PropTypes.string.isRequired, //请求数据的 url
-        name: PropTypes.string, //显示在表格左上角的名称
-        add: PropTypes.func, //添加方法
-        hasOpen: PropTypes.bool, //展示在表格顶部的过滤属性是否需要支持展开
-        screens: PropTypes.array, //展示在表格顶部的过滤属性
-        screen: PropTypes.object, //不展示在表格顶部的过滤属性
-        refresh: PropTypes.object, //刷新方法
-        actions: PropTypes.object, //额外的操作业务，放置在添加按钮旁边
-        pageSize: PropTypes.number,//分页大小
-        isPOST: PropTypes.bool,//是否是 POST 的请求方式获取数据
+        // columns: PropTypes.array.isRequired, //Table columns
+        // url: PropTypes.string.isRequired, //请求数据的 url
+        // name: PropTypes.string, //显示在表格左上角的名称
+        // add: PropTypes.func, //添加方法
+        // hasOpen: PropTypes.bool, //展示在表格顶部的过滤属性是否需要支持展开
+        // screens: PropTypes.array, //展示在表格顶部的过滤属性
+        // screen: PropTypes.object, //不展示在表格顶部的过滤属性
+        // refresh: PropTypes.object, //刷新方法
+        // actions: PropTypes.object, //额外的操作业务，放置在添加按钮旁边
+        // pageSize: PropTypes.number,//分页大小
+        // isPOST: PropTypes.bool,//是否是 POST 的请求方式获取数据
     }//props 类型检查
 
     static defaultProps = {

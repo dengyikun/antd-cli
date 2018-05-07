@@ -1,4 +1,4 @@
-import React, {Component, PropTypes}  from 'react'
+import React, {Component}  from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import userAction from '../actions/userAction'
@@ -13,8 +13,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 class Home extends React.Component{
     static propTypes = {
-        user: PropTypes.object.isRequired,
-        userAction: PropTypes.object.isRequired
     }//props 类型检查
 
     render() {
