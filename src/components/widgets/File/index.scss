@@ -1,0 +1,50 @@
+.body {
+  width: 100%;
+
+  .dropZone {
+    display: none;
+  }
+
+  .file {
+    width: 112px;
+    height: 144px;
+    margin: 0 auto;
+
+    > div {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+
+      .cover {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.3);
+        display: none;
+        flex-wrap: wrap;
+        align-items: center;
+        align-content: center;
+        justify-content: space-around;
+
+        .download, .delete, .upload{
+          border: none;
+          background: transparent;
+          color: #ffffff;
+          font-size: 14px;
+          padding: 8px 4px;
+          cursor: pointer;
+
+          > i {
+            vertical-align: text-bottom;
+          }
+        }
+      }
+
+      &:hover .cover {
+        display: flex;
+      }
+    }
+  }
+}
